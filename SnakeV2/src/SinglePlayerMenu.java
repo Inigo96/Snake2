@@ -25,8 +25,8 @@ public class SinglePlayerMenu extends JPanel{
 		Buttons = new JPanel();
 		Buttons.setLayout(new BoxLayout(Buttons,BoxLayout.Y_AXIS));
 		
-		ONEPlayer = new JButton("ONE PLAYER");//TODO añadir icon
-		TWOPlayers = new JButton("TWO PLAYERS");//TODO añadir icon
+		ONEPlayer = new JButton("ONE PLAYER");//TODO añadir icon y action listener
+		TWOPlayers = new JButton("TWO PLAYERS");//TODO añadir icon y action listener
 		Return = new JButton("RETURN TO MAIN MENU");//TODO añadir icon
 		Return.addActionListener(new ActionListener() {
 			

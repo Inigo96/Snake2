@@ -32,8 +32,8 @@ public class MainMenu extends JPanel{
 				
 			}
 		});
-		PlayOnline= new JButton("PLAY ONLINE");//TODO añadir icon
-		Exit= new JButton("EXIT");//TODO añadir icon
+		PlayOnline= new JButton("PLAY ONLINE");//TODO añadir icon y action listener
+		Exit= new JButton("EXIT");//TODO añadir icon y action listener
 		
 		Buttons.add(Box.createVerticalStrut(170));
 		Buttons.add(PlayOnline);
