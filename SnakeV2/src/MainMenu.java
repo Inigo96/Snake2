@@ -15,7 +15,9 @@ public class MainMenu extends JPanel{
 	JButton Exit;
 	
 	
-	public MainMenu(JFrame v){
+	public MainMenu(Ventana v){
+		
+		
 		
 		Buttons = new JPanel();
 		Buttons.setLayout(new BoxLayout(Buttons,BoxLayout.Y_AXIS));
@@ -29,7 +31,6 @@ public class MainMenu extends JPanel{
 				ENDMenu();
 				
 				v.add(new SinglePlayerMenu(v));
-				
 			}
 		});
 		PlayOnline= new JButton("PLAY ONLINE");//TODO añadir icon y action listener
@@ -55,9 +56,11 @@ public class MainMenu extends JPanel{
 		
 		v.add(this);
 		
+		v.setActivePanel(this);
+		
 		this.setVisible(true);
 		v.setVisible(true);
-			
+		
 	}
 	
 	public void ENDMenu(){

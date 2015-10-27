@@ -18,7 +18,7 @@ public class SinglePlayerMenu extends JPanel{
 	JButton TWOPlayers;
 	JButton Return;	
 	
-	public SinglePlayerMenu(JFrame v) {		
+	public SinglePlayerMenu(Ventana v) {		
 		
 		Menu=this;
 		
@@ -26,6 +26,17 @@ public class SinglePlayerMenu extends JPanel{
 		Buttons.setLayout(new BoxLayout(Buttons,BoxLayout.Y_AXIS));
 		
 		ONEPlayer = new JButton("ONE PLAYER");//TODO añadir icon y action listener
+		ONEPlayer.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				
+				ENDMenu();
+				
+				v.add(new Juego(v,1));
+			}
+		});
 		TWOPlayers = new JButton("TWO PLAYERS");//TODO añadir icon y action listener
 		Return = new JButton("RETURN TO MAIN MENU");//TODO añadir icon
 		Return.addActionListener(new ActionListener() {
@@ -51,6 +62,8 @@ public class SinglePlayerMenu extends JPanel{
 		Menu.add(Buttons);
 		
 		v.add(Menu);
+		
+		v.setActivePanel(Menu);
 		
 		v.setVisible(true);
 			

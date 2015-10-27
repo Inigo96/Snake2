@@ -1,10 +1,17 @@
 
 public class Main {
 
+	
+
+	
 	public static void main(String[] args){
 		
-		//tURN DOWN FOR WHAT
-		//dabidhaoidoaedhù EP	J
+		Ventana ventana;
+		
+		ventana=new Ventana();
+		ventana.add(new MainMenu(ventana));
+		
+		
 		System.out.println("Hola");
 	}
 	
