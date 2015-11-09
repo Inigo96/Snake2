@@ -24,7 +24,7 @@ public class Player extends JLabel implements Updatable{
 		Player=this;
 		
 		Player.setLocation(100, 100);
-		Player.setIcon(new ImageIcon("C:\\Users\\jomod\\git\\Snake2\\SnakeV2\\src\\ball.png"));
+		Player.setIcon(new ImageIcon(getClass().getResource("ball.png")));
 		Player.setSize(25, 25);
 		
 		Player.addKeyListener(new KeyListener() {

@@ -23,7 +23,7 @@ public class MainMenu extends JPanel{
 		
 		fondo = new JLabel();
 		fondo.setSize(800, 600);
-		fondo.setIcon(new ImageIcon("C:\\Users\\ander.areizagab\\git\\Snake2\\SnakeV2\\src\\fondo.jpg"));
+		fondo.setIcon(new ImageIcon(getClass().getResource("fondo.jpg")));
 		
 		PlayOffline= new JButton("PLAY OFFLINE");//TODO añadir icon
 		PlayOffline.addActionListener(new ActionListener() {
