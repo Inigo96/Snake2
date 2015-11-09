@@ -9,7 +9,9 @@ import javax.swing.*;
 public class MainMenu extends JPanel{
 
 	JPanel Buttons;
-
+	
+	JLabel fondo;
+	
 	JButton PlayOnline;
 	JButton PlayOffline;
 	JButton Exit;
@@ -17,10 +19,11 @@ public class MainMenu extends JPanel{
 	
 	public MainMenu(Ventana v){
 		
+		this.setLayout(null);
 		
-		
-		Buttons = new JPanel();
-		Buttons.setLayout(new BoxLayout(Buttons,BoxLayout.Y_AXIS));
+		fondo = new JLabel();
+		fondo.setSize(800, 600);
+		fondo.setIcon(new ImageIcon("C:\\Users\\ander.areizagab\\git\\Snake2\\SnakeV2\\src\\fondo.jpg"));
 		
 		PlayOffline= new JButton("PLAY OFFLINE");//TODO añadir icon
 		PlayOffline.addActionListener(new ActionListener() {
@@ -44,15 +47,13 @@ public class MainMenu extends JPanel{
 				
 			}
 		});
-		
-		Buttons.add(Box.createVerticalStrut(170));
-		Buttons.add(PlayOnline);
-		Buttons.add(Box.createVerticalStrut(20));
-		Buttons.add(PlayOffline);
-		Buttons.add(Box.createVerticalStrut(20));
-		Buttons.add(Exit);
-		
-		this.add(Buttons);
+		this.add(fondo);
+		PlayOnline.setBounds(330, 180, 130, 30);
+		this.add(PlayOnline,0);
+		PlayOffline.setBounds(330, 230, 130, 30);
+		this.add(PlayOffline,0);
+		Exit.setBounds(330, 280, 130, 30);
+		this.add(Exit,0);
 		
 		v.add(this);
 		
