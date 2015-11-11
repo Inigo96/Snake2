@@ -3,22 +3,26 @@ import java.awt.RenderingHints.Key;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.geom.Point2D;
+import java.awt.geom.Point2D.Double;
+import java.awt.geom.Point2D.Float;
 
 import javax.swing.ImageIcon;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.text.JTextComponent.KeyBinding;
 
 public class Player extends JLabel implements Updatable{
 
 	JLabel Player;
-	Point dir;
+	Double dir;
 	int speed;
 	boolean Bplayer;
 	
 	public Player(boolean n){
 
-		dir=new Point(1,1);
-		speed=5;
+		dir=new Double(0.5, 0.5);
+		speed=2;
 		Bplayer=true;
 		
 		Player=this;
@@ -42,11 +46,15 @@ public class Player extends JLabel implements Updatable{
 					if(e.getKeyCode()==e.VK_RIGHT){
 						System.out.println("hola");
 						//TODO mover angulo ++
-						Player.setLocation(getLocation().x++,getLocation().y--);
+						float angulo= (float) Math.atan(dir.x/dir.y);
+						dir= new Point2D.Double(Math.sin(angulo-0.01),Math.cos(angulo-0.01));
+						
+						
 					}
 					else if(e.getKeyCode()==e.VK_LEFT){
 						//TODO mover angulo --
-						Player.setLocation(getLocation().x-speed,getLocation().y-speed);
+						float angulo= (float) Math.atan(dir.x/dir.y);
+						dir= new Point2D.Double(Math.sin(angulo+0.01),Math.cos(angulo+0.01));
 					}
 				}
 				else{
@@ -66,6 +74,10 @@ public class Player extends JLabel implements Updatable{
 	
 	public void update(){
 		
+		requestFocus();
+		System.out.println(Math.toDegrees(Math.atan(dir.x/dir.y)));
+		setLocation(getLocation().x+(int)(dir.x*speed),getLocation().y+(int)(dir.y*speed));
+		//System.out.println(getLocation().x +"   "+ getLocation().y);
 		this.setVisible(true);		
 		
 	}
