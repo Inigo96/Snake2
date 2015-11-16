@@ -40,7 +40,7 @@ public class Ventana extends JFrame {
 		long time = System.currentTimeMillis();
 		do {
 			if (System.currentTimeMillis() - time > 16.7) {
-//				System.out.println("hi");
+				System.out.println("hi");
 				if (v.activePanel instanceof Updatable) {
 
 					((Updatable) v.activePanel).update();

@@ -20,7 +20,7 @@ public class Player extends JLabel implements Updatable{
 	boolean Bplayer;
 	
 	public Player(boolean n){
-
+		System.out.println("ddcf");
 		dir=new Double(0.5, 0.5);
 		speed=2;
 		Bplayer=true;
@@ -46,15 +46,18 @@ public class Player extends JLabel implements Updatable{
 					if(e.getKeyCode()==e.VK_RIGHT){
 						System.out.println("hola");
 						//TODO mover angulo ++
-						float angulo= (float) Math.atan(dir.x/dir.y);
-						dir= new Point2D.Double(Math.sin(angulo-0.01),Math.cos(angulo-0.01));
+						
+						float angulo= (float) Math.atan2(dir.y,dir.x);
+						angulo-=.11;
+						dir= new Point2D.Double(Math.cos(angulo),Math.sin(angulo));
 						
 						
 					}
 					else if(e.getKeyCode()==e.VK_LEFT){
 						//TODO mover angulo --
-						float angulo= (float) Math.atan(dir.x/dir.y);
-						dir= new Point2D.Double(Math.sin(angulo+0.01),Math.cos(angulo+0.01));
+						float angulo= (float) Math.atan2(dir.y,dir.x);
+						angulo+=.11;
+						dir= new Point2D.Double(Math.cos(angulo),Math.sin(angulo));
 					}
 				}
 				else{
