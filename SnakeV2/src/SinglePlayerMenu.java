@@ -3,8 +3,10 @@ import java.awt.event.ActionListener;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public class SinglePlayerMenu extends JPanel{
@@ -13,6 +15,8 @@ public class SinglePlayerMenu extends JPanel{
 	
 	JPanel Menu;
 	JPanel Buttons;
+	
+	JLabel fondo;
 
 	JButton ONEPlayer;
 	JButton TWOPlayers;
@@ -21,9 +25,11 @@ public class SinglePlayerMenu extends JPanel{
 	public SinglePlayerMenu(Ventana v) {		
 		
 		Menu=this;
+		Menu.setLayout(null);
 		
-		Buttons = new JPanel();
-		Buttons.setLayout(new BoxLayout(Buttons,BoxLayout.Y_AXIS));
+		fondo = new JLabel();
+		fondo.setSize(800, 600);
+		fondo.setIcon(new ImageIcon(getClass().getResource("fondo.jpg")));
 		
 		ONEPlayer = new JButton("ONE PLAYER");//TODO añadir icon y action listener
 		ONEPlayer.addActionListener(new ActionListener() {
@@ -52,14 +58,13 @@ public class SinglePlayerMenu extends JPanel{
 			}
 		});
 		
-		Buttons.add(Box.createVerticalStrut(170));
-		Buttons.add(ONEPlayer);
-		Buttons.add(Box.createVerticalStrut(20));
-		Buttons.add(TWOPlayers);
-		Buttons.add(Box.createVerticalStrut(20));
-		Buttons.add(Return);
-		
-		Menu.add(Buttons);
+		Menu.add(fondo);
+		ONEPlayer.setBounds(330, 180, 130, 30);
+		Menu.add(ONEPlayer,0);
+		TWOPlayers.setBounds(330, 230, 130, 30);
+		Menu.add(TWOPlayers,0);
+		Return.setBounds(300, 280, 190, 30);
+		Menu.add(Return,0);
 		
 		v.add(Menu);
 		
