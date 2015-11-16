@@ -42,7 +42,8 @@ public class MainMenu extends JPanel{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
+				Ventana.s.n=false;
+				Ventana.s.sonido.stop();
 				v.dispose();
 				
 			}

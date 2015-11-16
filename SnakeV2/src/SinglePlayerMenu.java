@@ -39,7 +39,8 @@ public class SinglePlayerMenu extends JPanel{
 				// TODO Auto-generated method stub
 				
 				ENDMenu();
-				
+				Ventana.s.n=false;
+				Ventana.s.sonido.stop();
 				v.add(new Juego(v,1));
 			}
 		});
