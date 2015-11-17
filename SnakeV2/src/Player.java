@@ -16,6 +16,8 @@ public class Player extends JLabel implements Updatable{
 
 	JLabel Player;
 	Double dir;
+	double x;
+	double y;
 	int speed;
 	boolean Bplayer;
 	
@@ -26,7 +28,8 @@ public class Player extends JLabel implements Updatable{
 		Bplayer=true;
 		
 		Player=this;
-		
+		x= 100;
+		y= 100;
 		Player.setLocation(100, 100);
 		Player.setIcon(new ImageIcon(getClass().getResource("ball.png")));
 		Player.setSize(25, 25);
@@ -79,8 +82,9 @@ public class Player extends JLabel implements Updatable{
 		
 		requestFocus();
 		System.out.println(Math.toDegrees(Math.atan(dir.x/dir.y)));
-		setLocation(getLocation().x+(int)(dir.x*speed),getLocation().y+(int)(dir.y*speed));
-		//System.out.println(getLocation().x +"   "+ getLocation().y);
+		x+=dir.x*speed;
+		y+=dir.y*speed;
+		setLocation((int)x,(int)y);
 		this.setVisible(true);		
 		
 	}
