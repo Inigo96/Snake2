@@ -50,10 +50,17 @@ public class Juego extends JPanel implements Updatable{
 			
 		objects= new ArrayList<Object>();
 		
-		Player a= new Player(true);
-		a.setLocation(100, 100);
-		objects.add(a);
-		PanelJuego.add(a);
+		for(int p=0;p<players;p++){
+			Player a;
+			if(p==0){
+				a= new Player(true);
+			}else{
+				a= new Player(false);
+			}
+			objects.add(a);
+			PanelJuego.add(a);
+		}
+		
 		
 		pointList= new ArrayList<Ellipse2D>();
 		
@@ -75,7 +82,7 @@ public class Juego extends JPanel implements Updatable{
         for(int j = 0; j < pointList.size(); j++)
         {
             e = (Ellipse2D)pointList.get(j);
-            color = Color.blue;
+            color = Color.red;
             g2.setPaint(color);
             g2.fill(e);
         }
@@ -83,7 +90,7 @@ public class Juego extends JPanel implements Updatable{
     
 	public void addPoint(Point p)
     {
-        Ellipse2D e = new Ellipse2D.Double(p.x - 3, p.y - 3, 6, 6);
+        Ellipse2D e = new Ellipse2D.Double(p.x - 3, p.y - 3, 10, 10);
         pointList.add(e);
         repaint();
     }
@@ -93,6 +100,7 @@ public class Juego extends JPanel implements Updatable{
 		for(int a=0;a<objects.size();a++){
 			
 			((Updatable) objects.get(a)).update();
+			addPoint(((JLabel)objects.get(a)).getLocation());
 		}
 		
 		this.setVisible(true);

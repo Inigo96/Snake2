@@ -37,7 +37,7 @@ public class SinglePlayerMenu extends JPanel{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				
+
 				ENDMenu();
 				Ventana.s.n=false;
 				Ventana.s.sonido.stop();
@@ -45,6 +45,17 @@ public class SinglePlayerMenu extends JPanel{
 			}
 		});
 		TWOPlayers = new JButton("TWO PLAYERS");//TODO añadir icon y action listener
+		TWOPlayers.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				ENDMenu();
+				Ventana.s.n=false;
+				Ventana.s.sonido.stop();
+				v.add(new Juego(v,2));
+			}
+		});
 		Return = new JButton("RETURN TO MAIN MENU");//TODO añadir icon
 		Return.addActionListener(new ActionListener() {
 			

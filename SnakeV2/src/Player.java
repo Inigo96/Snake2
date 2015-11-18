@@ -23,16 +23,23 @@ public class Player extends JLabel implements Updatable{
 	
 	public Player(boolean n){
 		System.out.println("ddcf");
-		dir=new Double(0.5, 0.5);
+		
 		speed=2;
-		Bplayer=true;
+		Bplayer=n;
 		
 		Player=this;
-		x= 100;
-		y= 100;
-		Player.setLocation(100, 100);
-		Player.setIcon(new ImageIcon(getClass().getResource("ball.png")));
-		Player.setSize(25, 25);
+		
+		if(Bplayer==true){
+			dir=new Double(0.5, 0.5);
+			x= 100;
+			y= 100;	
+		}else{
+			dir=new Double(-0.5, 0.5);
+			x=700;
+			y=100;
+		}
+		
+		Player.setLocation((int)x, (int)y);
 		
 		Player.addKeyListener(new KeyListener() {
 
@@ -64,7 +71,7 @@ public class Player extends JLabel implements Updatable{
 					}
 				}
 				else{
-					if(e.getKeyCode()==e.VK_S){
+					if(e.getKeyCode()==e.VK_A){
 						//TODO mover angulo ++
 					}
 					else if(e.getKeyCode()==e.VK_D){
@@ -84,8 +91,9 @@ public class Player extends JLabel implements Updatable{
 		System.out.println(Math.toDegrees(Math.atan(dir.x/dir.y)));
 		x+=dir.x*speed;
 		y+=dir.y*speed;
-		setLocation((int)x,(int)y);
+		setLocation((int)Math.round(x),(int)Math.round(y));
 		this.setVisible(true);		
+		transferFocus();
 		
 	}
 	
