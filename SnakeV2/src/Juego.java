@@ -25,6 +25,7 @@ import java.awt.image.BufferedImage;
 import java.awt.image.BufferedImageOp;
 import java.awt.image.ColorModel;
 import java.awt.image.ImageObserver;
+import java.awt.image.PixelGrabber;
 import java.awt.image.RenderedImage;
 import java.awt.image.renderable.RenderableImage;
 import java.text.AttributedCharacterIterator;
@@ -39,6 +40,7 @@ public class Juego extends JPanel implements Updatable{
 	public JPanel PanelJuego;
 	ArrayList<Object> objects;
 	List<Ellipse2D> pointList;
+	Ventana ventana;
 
 	public Juego(Ventana v, int players){
 		
@@ -69,6 +71,8 @@ public class Juego extends JPanel implements Updatable{
 	    v.setActivePanel(PanelJuego);
 	    
 	    v.setVisible(true);
+	    
+	    ventana=v;
 	}
 	
 	protected void paintComponent(Graphics g)
@@ -99,8 +103,22 @@ public class Juego extends JPanel implements Updatable{
 		
 		for(int a=0;a<objects.size();a++){
 			
+			Player player=(Player)objects.get(a);
+			
 			((Updatable) objects.get(a)).update();
-			addPoint(((JLabel)objects.get(a)).getLocation());
+			
+			if(player.getLocation().x < 0 || player.getLocation().x >800 || player.getLocation().y < 0 || player.getLocation().y >600){
+				objects.remove(a);
+			}
+			
+			addPoint(player.getLocation());
+				
+		}
+		
+		if(objects.size()==0){
+			this.removeAll();
+			
+			ventana.add(new MainMenu(ventana));
 		}
 		
 		this.setVisible(true);

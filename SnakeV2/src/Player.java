@@ -73,9 +73,18 @@ public class Player extends JLabel implements Updatable{
 				else{
 					if(e.getKeyCode()==e.VK_A){
 						//TODO mover angulo ++
+						float angulo= (float) Math.atan2(dir.y,dir.x);
+						angulo+=.11;
+						dir= new Point2D.Double(Math.cos(angulo),Math.sin(angulo));
+						
 					}
 					else if(e.getKeyCode()==e.VK_D){
 						//TODO mover angulo --
+						
+						float angulo= (float) Math.atan2(dir.y,dir.x);
+						angulo-=.11;
+						dir= new Point2D.Double(Math.cos(angulo),Math.sin(angulo));
+						
 					}
 				}
 
