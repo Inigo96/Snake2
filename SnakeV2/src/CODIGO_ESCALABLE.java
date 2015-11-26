@@ -14,5 +14,6 @@ public class CODIGO_ESCALABLE {
 	double height = screenSize.getHeight();
 	
 	//escalar imagen
-	this.imageSuelo = new ImageIcon("recursos/suelo.jpg").getImage().getScaledInstance(ANCHURASUELO, ALTURASUELO,  java.awt.Image.SCALE_SMOOTH); // transformarlo y escalarlo de forma delicada
+	this.imageSuelo = new ImageIcon("recursos//suelo.jpg").getImage().getScaledInstance(ANCHURASUELO, ALTURASUELO,  java.awt.Image.SCALE_SMOOTH); // transformarlo y escalarlo de forma delicada
+
 }
