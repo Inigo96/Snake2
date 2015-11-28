@@ -11,7 +11,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 public class Ventana extends JFrame {
-	public static sonido1 s = new sonido1();
+	public sonido1 s = new sonido1();
 
 	private static final long serialVersionUID = 1L;
 
@@ -31,25 +31,35 @@ public class Ventana extends JFrame {
 		activePanel = a;
 	}
 
-	public static void main(String[] args) {
-
-		Ventana v = new Ventana();
-		v.add(new MainMenu(v));
+	
+	public void bucleJuego(){
+		
+		this.add(new MainMenu(this));
 
 		s.start();
 		long time = System.currentTimeMillis();
 		do {
 			if (System.currentTimeMillis() - time > 16.7) {
 				System.out.println("hi");
-				if (v.activePanel instanceof Updatable) {
+				if (this.activePanel instanceof Updatable) {
 
-					((Updatable) v.activePanel).update();
+					((Updatable) this.activePanel).update();
 				}
 				time = System.currentTimeMillis();
 			}
 
-		} while (v.isActive());
-
+		} while (this.isActive());
+	}
+	
+	public static void main(String[] args) {
+		new Thread(new Runnable() {
+			
+			@Override
+			public void run() {
+				// TODO Auto-generated method stub
+				Ventana v = new Ventana();
+			}
+		}).run();
 	}
 }
 
