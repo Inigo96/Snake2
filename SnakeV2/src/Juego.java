@@ -116,13 +116,11 @@ public class Juego extends JPanel implements Updatable{
 		}
 		
 		if(objects.size()==0){
-			this.removeAll();
-			
+			ventana.remove(this);
 			ventana.add(new MainMenu(ventana));
+		}else{
+			System.out.println(objects.size());
 		}
-		
-		this.setVisible(true);
-		
 	}
 
 }
