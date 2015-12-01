@@ -58,6 +58,7 @@ public class Ventana extends JFrame {
 			public void run() {
 				// TODO Auto-generated method stub
 				Ventana v = new Ventana();
+				v.bucleJuego();
 			}
 		}).run();
 	}
