@@ -31,7 +31,7 @@ public class MainMenu extends JPanel{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
-				ENDMenu();
+				ENDMenu(v);
 				
 				v.add(new SinglePlayerMenu(v));
 			}
@@ -45,7 +45,6 @@ public class MainMenu extends JPanel{
 				v.s.n=false;
 				v.s.sonido.stop();
 				v.dispose();
-				
 			}
 		});
 		this.add(fondo);
@@ -65,9 +64,8 @@ public class MainMenu extends JPanel{
 		
 	}
 	
-	public void ENDMenu(){
-		
-		this.removeAll();
+	public void ENDMenu(Ventana v){
+		v.remove(this);
 		
 	}
 		
