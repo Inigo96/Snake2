@@ -76,6 +76,7 @@ public class Ventana extends JFrame implements WindowListener{
 	@Override
 	public void windowClosing(WindowEvent e) {
 		// TODO Auto-generated method stub
+		this.s.n=false;
 		this.s.sonido.stop();
 		this.dispose();
 	}
