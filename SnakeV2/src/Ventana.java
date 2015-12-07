@@ -1,5 +1,10 @@
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.io.BufferedInputStream;
 import java.io.IOException;
+
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
@@ -8,7 +13,7 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-public class Ventana extends JFrame {
+public class Ventana extends JFrame implements WindowListener{
 	public sonido1 s = new sonido1();
 
 	private static final long serialVersionUID = 1L;
@@ -19,10 +24,11 @@ public class Ventana extends JFrame {
 
 		activePanel = null;
 		this.setSize(800, 600);
-		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		this.setDefaultCloseOperation(this.DISPOSE_ON_CLOSE);
 		this.setResizable(false);
 		this.setVisible(true);
-
+		addWindowListener(this);
+    
 	}
 
 	public void setActivePanel(JPanel a) {
@@ -60,6 +66,31 @@ public class Ventana extends JFrame {
 			}
 		}).run();
 	}
+
+	@Override
+	public void windowActivated(WindowEvent e) {}
+
+	@Override
+	public void windowClosed(WindowEvent e) {}
+
+	@Override
+	public void windowClosing(WindowEvent e) {
+		// TODO Auto-generated method stub
+		this.s.sonido.stop();
+		this.dispose();
+	}
+
+	@Override
+	public void windowDeactivated(WindowEvent e) {}
+
+	@Override
+	public void windowDeiconified(WindowEvent e) {}
+
+	@Override
+	public void windowIconified(WindowEvent e) {}
+
+	@Override
+	public void windowOpened(WindowEvent e) {}
 }
 
 class sonido1 extends Thread {
