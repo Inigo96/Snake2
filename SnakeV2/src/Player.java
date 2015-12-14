@@ -34,7 +34,7 @@ public class Player extends JLabel implements Updatable{
 			x= 100;
 			y= 100;	
 		}else{
-			dir=new Double(-0.5, 0.5);
+			dir=new Double(-0.5, 0.4);
 			x=700;
 			y=100;
 		}
@@ -58,7 +58,7 @@ public class Player extends JLabel implements Updatable{
 						//TODO mover angulo ++
 						
 						float angulo= (float) Math.atan2(dir.y,dir.x);
-						angulo-=.11;
+						angulo-=.3;
 						dir= new Point2D.Double(Math.cos(angulo),Math.sin(angulo));
 						
 						
@@ -66,7 +66,7 @@ public class Player extends JLabel implements Updatable{
 					else if(e.getKeyCode()==e.VK_LEFT){
 						//TODO mover angulo --
 						float angulo= (float) Math.atan2(dir.y,dir.x);
-						angulo+=.11;
+						angulo+=.3;
 						dir= new Point2D.Double(Math.cos(angulo),Math.sin(angulo));
 					}
 				}
@@ -74,7 +74,7 @@ public class Player extends JLabel implements Updatable{
 					if(e.getKeyCode()==e.VK_A){
 						//TODO mover angulo ++
 						float angulo= (float) Math.atan2(dir.y,dir.x);
-						angulo+=.11;
+						angulo+=.3;
 						dir= new Point2D.Double(Math.cos(angulo),Math.sin(angulo));
 						
 					}
@@ -82,7 +82,7 @@ public class Player extends JLabel implements Updatable{
 						//TODO mover angulo --
 						
 						float angulo= (float) Math.atan2(dir.y,dir.x);
-						angulo-=.11;
+						angulo-=.3;
 						dir= new Point2D.Double(Math.cos(angulo),Math.sin(angulo));
 						
 					}
