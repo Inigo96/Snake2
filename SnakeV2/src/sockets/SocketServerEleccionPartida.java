@@ -8,11 +8,12 @@ import java.io.*;
 
 import java.io.*;
 
-public class SocketServer {
+public class SocketServerEleccionPartida {
 
 	private Socket socket;
 	private ArrayList<String> cola;
 	private ArrayList<String> enPartida;
+	final int numJugadoresPorPartida=4;
 
 	/*3 valores int(formato String) Usuario ;
 	 * 0 Introducir IP cola
@@ -32,6 +33,7 @@ public class SocketServer {
 		{
 			cola=new ArrayList<>();
 			int port = 5000;
+			int portGame=5250;
 			ServerSocket serverSocket = new ServerSocket(port);
 			System.out.println("Server Started and listening to the port 5000");
 
@@ -40,9 +42,7 @@ public class SocketServer {
 			{
 				//Reading the message from the client
 				socket = serverSocket.accept();
-				InputStream is = socket.getInputStream();
-				InputStreamReader isr = new InputStreamReader(is);
-				BufferedReader br = new BufferedReader(isr);
+				BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 				String number = br.readLine();
 				String respuesta = null;
 				if(number.equals("0")){
@@ -57,10 +57,11 @@ public class SocketServer {
 					if (cola.remove(socket.getInetAddress().toString())) respuesta="201"; else respuesta="404";					
 				}else if(number.equals("2")){
 					//Mirar si ya tiene contrincantes
-					if(true){
-						
+					int lugar=enPartida.indexOf(socket.getRemoteSocketAddress().toString());
+					if(lugar!=-1){
+						respuesta=Integer.toString((int)(lugar/numJugadoresPorPartida))+",,,"+portGame;
 					}else{
-						
+						respuesta="404";
 					}
 				}
 				//Sending the response back to the client.
@@ -70,6 +71,9 @@ public class SocketServer {
               bw.write(respuesta);
 //              System.out.println("Message sent to the client is "+returnMessage);
               bw.flush();
+              if(cola.size()==4){
+            	  enPartida.add();
+              }
 			}	
 		}
 		catch (Exception e)
@@ -87,9 +91,23 @@ public class SocketServer {
 	}
 
 	public static void main(String[] args) {
-		new SocketServer().initServer();
+		new SocketServerEleccionPartida().initServer();
+	}
+	
+	private class Juego{
+		String [] IP;
+		
+		public Juego(String[] IP) {
+			this.IP=IP;
+		}
+		
+		
+		
 	}
 }
+
+
+
 //	public void initServer(){
 //		try
 //        {
