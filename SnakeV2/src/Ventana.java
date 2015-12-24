@@ -28,7 +28,7 @@ public class Ventana extends JFrame implements WindowListener{
 		this.setResizable(false);
 		this.setVisible(true);
 		addWindowListener(this);
-    
+		setLocationRelativeTo(null);
 	}
 
 	public void setActivePanel(JPanel a) {

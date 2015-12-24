@@ -20,6 +20,7 @@ import java.awt.font.FontRenderContext;
 import java.awt.font.GlyphVector;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.BufferedImageOp;
@@ -41,6 +42,7 @@ public class Juego extends JPanel implements Updatable{
 	ArrayList<Object> objects;
 	List<Ellipse2D> pointList;
 	Ventana ventana;
+	int[][] color=new int[800][600];
 
 	public Juego(Ventana v, int players){
 		
@@ -107,12 +109,22 @@ public class Juego extends JPanel implements Updatable{
 			
 			((Updatable) objects.get(a)).update();
 			
-			if(player.getLocation().x < 0 || player.getLocation().x >800 || player.getLocation().y < 0 || player.getLocation().y >600){
+			if(player.getLocation().x < 0 || player.getLocation().x >800 || player.getLocation().y < 0 || player.getLocation().y>600){
 				objects.remove(a);
 			}
 			
-			addPoint(player.getLocation());
-				
+			if(player.getLocation().x>0 && player.getLocation().y>0 && player.getLocation().x<799 && player.getLocation().y<599){
+				if(color[player.getLocation().x][player.getLocation().y]==1 || color[player.getLocation().x+1][player.getLocation().y]==1 ||
+						color[player.getLocation().x-1][player.getLocation().y]==1 || color[player.getLocation().x][player.getLocation().y+1]==1 ||
+						color[player.getLocation().x][player.getLocation().y-1]==1 ){
+					objects.remove(a);
+				}
+			}
+			
+			addPoint(new Point(Math.round((float)(player.getLocation().x+player.dir.x*-2)),Math.round((float)(player.getLocation().y+player.dir.y*-2))));
+			if(player.getLocation().x>0 && player.getLocation().y>0 && player.getLocation().x<799 && player.getLocation().y<599){
+				color[Math.round((float)(player.getLocation().x+player.dir.x*-2))][Math.round((float)(player.getLocation().y+player.dir.y*-2))]= 1;
+			}
 		}
 		
 		if(objects.size()==0){
