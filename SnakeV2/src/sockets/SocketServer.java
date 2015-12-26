@@ -1,24 +1,29 @@
 package sockets;
+import java.math.BigInteger;
 import java.net.*;
+import java.security.SecureRandom;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.io.*;
 
-
-import java.io.*;
-
-public class SocketServerEleccionPartida {
+public class SocketServer {
 
 	private Socket socket;
-	private ArrayList<String> cola;
-	private ArrayList<String> enPartida;
-	final int numJugadoresPorPartida=4;
+	private Queue<String> cola;
+	private HashMap<String, Juego> enPartida;
+	private HashMap<String, String> codigoAccesoAJuego;
+	//	private ArrayList<Juego> enPartida;
+	private final int numJugadoresPorPartida=4;
+	private SecureRandom random;
 
 	/*3 valores int(formato String) Usuario ;
 	 * 0 Introducir IP cola
 	 * 1 Borrar usuario de cola por haberse salido
 	 * 2 Pregunta acerca de si tiene ya contrincantes
+	 * String (referencia) cuando 
 	 */
 
 	/*
@@ -31,9 +36,10 @@ public class SocketServerEleccionPartida {
 	public void initServer(){
 		try
 		{
-			cola=new ArrayList<>();
-			int port = 5000;
-			int portGame=5250;
+			random=new SecureRandom();
+			cola=new LinkedList<>();
+			enPartida=new HashMap<>();
+			final int port = 5000;
 			ServerSocket serverSocket = new ServerSocket(port);
 			System.out.println("Server Started and listening to the port 5000");
 
@@ -46,6 +52,7 @@ public class SocketServerEleccionPartida {
 				String number = br.readLine();
 				String respuesta = null;
 				if(number.equals("0")){
+					//Introduce al cliente en la lista si no se encuentra en ella
 					String IP=socket.getRemoteSocketAddress().toString();
 					if(!cola.contains(IP)){
 						cola.add(IP);
@@ -54,27 +61,44 @@ public class SocketServerEleccionPartida {
 						respuesta="404";
 					}
 				}else if(number.equals("1")){
+					//Salir de la lista 
 					if (cola.remove(socket.getInetAddress().toString())) respuesta="201"; else respuesta="404";					
 				}else if(number.equals("2")){
 					//Mirar si ya tiene contrincantes
-					int lugar=enPartida.indexOf(socket.getRemoteSocketAddress().toString());
-					if(lugar!=-1){
-						respuesta=Integer.toString((int)(lugar/numJugadoresPorPartida))+",,,"+portGame;
+					String IP=socket.getRemoteSocketAddress().toString();
+					if(cola.contains(IP)){
+						respuesta="300";
 					}else{
-						respuesta="404";
+						//Si los tiene darles el código del juego en el que están jugando
+						respuesta=codigoAccesoAJuego.get(socket.getRemoteSocketAddress().toString());
+						if(respuesta==null)respuesta="404";
 					}
+				}else{
+					//Enviar mensaje a interpretar por el cliente
+					Juego juego;
+					if((juego=enPartida.get(number))!=null) respuesta=juego.getRespuesta() ;
+					else respuesta="404";
 				}
-				//Sending the response back to the client.
-              OutputStream os = socket.getOutputStream();
-              OutputStreamWriter osw = new OutputStreamWriter(os);
-              BufferedWriter bw = new BufferedWriter(osw);
-              bw.write(respuesta);
-//              System.out.println("Message sent to the client is "+returnMessage);
-              bw.flush();
-              if(cola.size()==4){
-            	  enPartida.add();
-              }
-			}	
+				//Sending response back to the client.
+				OutputStream os = socket.getOutputStream();
+				OutputStreamWriter osw = new OutputStreamWriter(os);
+				BufferedWriter bw = new BufferedWriter(osw);
+				bw.write(respuesta);
+				bw.flush();
+				if(cola.size()==4){
+					String contrasenya=null;
+					do{
+						contrasenya=randomNumber();
+					}while(enPartida.containsKey(contrasenya));
+					String IP[]=new String[numJugadoresPorPartida];
+					for(int a=0;a<numJugadoresPorPartida;a++){
+						IP[a]=(cola.peek());
+						codigoAccesoAJuego.put(cola.poll(),contrasenya );
+					}
+					enPartida.put(contrasenya, new Juego(IP,contrasenya));
+					
+				}
+			}
 		}
 		catch (Exception e)
 		{
@@ -90,19 +114,41 @@ public class SocketServerEleccionPartida {
 		}
 	}
 
-	public static void main(String[] args) {
-		new SocketServerEleccionPartida().initServer();
+	private String randomNumber(){
+		return new BigInteger(130,random).toString(32);
 	}
-	
-	private class Juego{
-		String [] IP;
-		
-		public Juego(String[] IP) {
-			this.IP=IP;
+
+	public static void main(String[] args) {
+		new SocketServer().initServer();
+	}
+
+	private class Juego implements Runnable{
+		private String [] IP;
+		private String contrasenya;
+		private String getRespuesta(){
+			return null;
 		}
-		
-		
-		
+
+		public Juego(String[] IP,String contrasenya) {
+			this.IP=IP;
+			this.contrasenya=contrasenya;
+		}
+
+		@Override
+		public void run() {
+			try {
+				Thread.sleep(5000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			// TODO Comenzar Juego -> A poder ser dejarme una variable que poder coger y praparado para enviar con get
+			//TODO al terminar partida hay que guardarla en BD, borrarla de enPartida y codigoAccesoAJuego
+		}		
+
+	}
+
+	private class BD{
+		//Inicio, método para 
 	}
 }
 
