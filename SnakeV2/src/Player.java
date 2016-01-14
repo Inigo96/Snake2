@@ -40,10 +40,7 @@ public class Player extends JLabel implements Updatable{
 		}
 		
 		Player.setLocation((int)x, (int)y);
-		
-		
-		
-		
+
 	}
 	
 	public void update(){
@@ -55,6 +52,10 @@ public class Player extends JLabel implements Updatable{
 		this.setVisible(true);		
 		transferFocus();
 		
+	}
+	
+	public String toString(){
+		return x+";"+y;
 	}
 	
 }
