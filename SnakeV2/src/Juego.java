@@ -16,6 +16,8 @@ import java.awt.RenderingHints;
 import java.awt.Shape;
 import java.awt.Stroke;
 import java.awt.RenderingHints.Key;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.font.FontRenderContext;
 import java.awt.font.GlyphVector;
 import java.awt.geom.AffineTransform;
@@ -68,6 +70,74 @@ public class Juego extends JPanel implements Updatable{
 		
 		pointList= new ArrayList<Ellipse2D>();
 		
+		PanelJuego.addKeyListener(new KeyListener() {
+			
+			boolean R=false;
+			boolean L=false;
+			boolean a=false;
+			boolean d=false;
+
+			@Override
+			public void keyTyped(KeyEvent e) {}
+
+			@Override
+			public void keyReleased(KeyEvent e) {
+				if(e.getKeyCode()==e.VK_RIGHT){
+					R=false;
+				}
+				else if(e.getKeyCode()==e.VK_LEFT){
+					L=false;
+				}
+				if(players==2){
+					if(e.getKeyCode()==e.VK_A){
+						a=false;
+					}
+					else if(e.getKeyCode()==e.VK_D){
+						d=false;
+					}
+				}
+			}
+
+			@Override
+			public void keyPressed(KeyEvent e) {
+				// TODO Auto-generated method stub
+				if(e.getKeyCode()==e.VK_RIGHT){
+					R=true;
+				}
+				else if(e.getKeyCode()==e.VK_LEFT){
+					L=true;
+				}
+				if(players==2){
+					if(e.getKeyCode()==e.VK_A){
+						a=true;
+					}
+					else if(e.getKeyCode()==e.VK_D){
+						d=true;
+					}
+				}
+				if(R){
+					float angulo= (float) Math.atan2(((Player)objects.get(0)).dir.y,((Player)objects.get(0)).dir.x);
+					angulo-=.3;
+					((Player)objects.get(0)).dir= new Point2D.Double(Math.cos(angulo),Math.sin(angulo));
+				}
+				if(L){
+					float angulo= (float) Math.atan2(((Player)objects.get(0)).dir.y,((Player)objects.get(0)).dir.x);
+					angulo+=.3;
+					((Player)objects.get(0)).dir= new Point2D.Double(Math.cos(angulo),Math.sin(angulo));
+				}
+				if(a){
+					float angulo= (float) Math.atan2(((Player)objects.get(1)).dir.y,((Player)objects.get(1)).dir.x);
+					angulo+=.3;
+					((Player)objects.get(1)).dir= new Point2D.Double(Math.cos(angulo),Math.sin(angulo));
+				}
+				if(d){
+					float angulo= (float) Math.atan2(((Player)objects.get(1)).dir.y,((Player)objects.get(1)).dir.x);
+					angulo-=.3;
+					((Player)objects.get(1)).dir= new Point2D.Double(Math.cos(angulo),Math.sin(angulo));
+				}			
+			}
+		});
+		
 	    v.add(PanelJuego);
 	    
 	    v.setActivePanel(PanelJuego);
@@ -75,6 +145,8 @@ public class Juego extends JPanel implements Updatable{
 	    v.setVisible(true);
 	    
 	    ventana=v;
+	    
+	    
 	}
 	
 	protected void paintComponent(Graphics g)
@@ -103,6 +175,7 @@ public class Juego extends JPanel implements Updatable{
 
 	public void update() {
 		
+		requestFocus();
 		for(int a=0;a<objects.size();a++){
 			
 			Player player=(Player)objects.get(a);
@@ -121,9 +194,9 @@ public class Juego extends JPanel implements Updatable{
 				}
 			}
 			
-			addPoint(new Point(Math.round((float)(player.getLocation().x+player.dir.x*-2)),Math.round((float)(player.getLocation().y+player.dir.y*-2))));
+			addPoint(new Point(Math.round((float)(player.getLocation().x+player.dir.x*-1)),Math.round((float)(player.getLocation().y+player.dir.y*-1))));
 			if(player.getLocation().x>0 && player.getLocation().y>0 && player.getLocation().x<799 && player.getLocation().y<599){
-				color[Math.round((float)(player.getLocation().x+player.dir.x*-2))][Math.round((float)(player.getLocation().y+player.dir.y*-2))]= 1;
+				color[Math.round((float)(player.getLocation().x+player.dir.x*-1))][Math.round((float)(player.getLocation().y+player.dir.y*-1))]= 1;
 			}
 		}
 		

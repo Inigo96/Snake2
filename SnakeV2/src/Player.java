@@ -15,7 +15,7 @@ import javax.swing.text.JTextComponent.KeyBinding;
 public class Player extends JLabel implements Updatable{
 
 	JLabel Player;
-	Double dir;
+	public Double dir;
 	double x;
 	double y;
 	int speed;
@@ -41,62 +41,13 @@ public class Player extends JLabel implements Updatable{
 		
 		Player.setLocation((int)x, (int)y);
 		
-		Player.addKeyListener(new KeyListener() {
-
-			@Override
-			public void keyTyped(KeyEvent e) {}
-
-			@Override
-			public void keyReleased(KeyEvent e) {}
-
-			@Override
-			public void keyPressed(KeyEvent e) {
-				// TODO Auto-generated method stub
-				if(Bplayer==true){
-					if(e.getKeyCode()==e.VK_RIGHT){
-						System.out.println("hola");
-						//TODO mover angulo ++
-						
-						float angulo= (float) Math.atan2(dir.y,dir.x);
-						angulo-=.3;
-						dir= new Point2D.Double(Math.cos(angulo),Math.sin(angulo));
-						
-						
-					}
-					else if(e.getKeyCode()==e.VK_LEFT){
-						//TODO mover angulo --
-						float angulo= (float) Math.atan2(dir.y,dir.x);
-						angulo+=.3;
-						dir= new Point2D.Double(Math.cos(angulo),Math.sin(angulo));
-					}
-				}
-				else{
-					if(e.getKeyCode()==e.VK_A){
-						//TODO mover angulo ++
-						float angulo= (float) Math.atan2(dir.y,dir.x);
-						angulo+=.3;
-						dir= new Point2D.Double(Math.cos(angulo),Math.sin(angulo));
-						
-					}
-					else if(e.getKeyCode()==e.VK_D){
-						//TODO mover angulo --
-						
-						float angulo= (float) Math.atan2(dir.y,dir.x);
-						angulo-=.3;
-						dir= new Point2D.Double(Math.cos(angulo),Math.sin(angulo));
-						
-					}
-				}
-
-			}
-		});
+		
 		
 		
 	}
 	
 	public void update(){
 		
-		requestFocus();
 		System.out.println(Math.toDegrees(Math.atan(dir.x/dir.y)));
 		x+=dir.x*speed;
 		y+=dir.y*speed;
