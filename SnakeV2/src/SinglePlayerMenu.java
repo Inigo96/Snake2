@@ -47,6 +47,7 @@ public class SinglePlayerMenu extends JPanel{
 		TWOPlayers = new JButton("TWO PLAYERS");//TODO añadir icon y action listener
 		TWOPlayers.addActionListener(new ActionListener() {
 			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
