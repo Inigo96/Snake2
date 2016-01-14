@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.Queue;
+import java.awt.Point;
 import java.io.*;
 
 public class SocketServer {
@@ -123,6 +124,10 @@ public class SocketServer {
 	}
 
 	private class Juego implements Runnable{
+		
+		ArrayList<Point> objects;
+		int[][] color=new int[800][600];
+		
 		private String [] IP;
 		private String contrasenya;
 		private String getRespuesta(){
@@ -140,6 +145,28 @@ public class SocketServer {
 				Thread.sleep(5000);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
+			}
+			for(int a=0;a<objects.size();a++){
+				
+				
+				if(objects.get(a).x < 0 || objects.get(a).x >800 || objects.get(a).y < 0 || objects.get(a).y>600){
+					objects.remove(a);
+				}
+				
+				if(objects.get(a).x>0 && objects.get(a).y>0 && objects.get(a).x<799 && objects.get(a).y<599){
+					if(color[objects.get(a).x][objects.get(a).y]!=(a & 0) || color[objects.get(a).x+1][objects.get(a).y]!=(a & 0) ||
+							color[objects.get(a).x-1][objects.get(a).y]!=(a & 0) || color[objects.get(a).x][objects.get(a).y+1]!=(a & 0)||
+							color[objects.get(a).x][objects.get(a).y-1]!=(a & 0) ){
+						objects.remove(a);
+					}
+				}
+				if(objects.get(a).x>0 && objects.get(a).y>0 && objects.get(a).x<799 && objects.get(a).y<599){
+					color[Math.round((float)(objects.get(a).x+objects.get(a).x))][Math.round((float)(objects.get(a).y+objects.get(a).y))]= a;
+				}
+			}
+			
+			if(objects.size()<=1){
+				// TODO terminar partida
 			}
 			// TODO Comenzar Juego -> A poder ser dejarme una variable que poder coger y praparado para enviar con get
 			//TODO al terminar partida hay que guardarla en BD, borrarla de enPartida y codigoAccesoAJuego

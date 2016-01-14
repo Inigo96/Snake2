@@ -37,6 +37,15 @@ public class MainMenu extends JPanel{
 			}
 		});
 		PlayOnline= new JButton("PLAY ONLINE");//TODO añadir icon y action listener
+		PlayOnline.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+		
 		Exit= new JButton("EXIT");//TODO añadir icon y action listener
 		Exit.addActionListener(new ActionListener() {
 			
