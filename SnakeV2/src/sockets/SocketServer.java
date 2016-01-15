@@ -26,7 +26,7 @@ public class SocketServer {
 	 * 2 Pregunta acerca de si tiene ya contrincantes
 	 * String (referencia) cuando 
 	 * TODO BD nombre
-	 * TODO rank Pedir datos de servidor
+	 * TODO RANK Pedir datos de servidor
 	 */
 
 	/*
@@ -76,6 +76,11 @@ public class SocketServer {
 						respuesta=codigoAccesoAJuego.get(socket.getRemoteSocketAddress().toString());
 						if(respuesta==null)respuesta="404";
 					}
+				}else if(number.equals("RANK")){
+					//Peticion BD
+				}else if(number.substring(0,1).equals("BD")){
+					number.substring(2,number.length()-1);
+					//Peticion BD
 				}else{
 					//Enviar mensaje a interpretar por el cliente
 					Juego juego;
@@ -98,8 +103,8 @@ public class SocketServer {
 						IP[a]=(cola.peek());
 						codigoAccesoAJuego.put(cola.poll(),contrasenya );
 					}
-					enPartida.put(contrasenya, new Juego(IP,contrasenya));
-					
+					enPartida.put(contrasenya, new Juego(IP));
+
 				}
 			}
 		}
@@ -126,26 +131,25 @@ public class SocketServer {
 	}
 
 	private class Juego implements Runnable{
-		
-		Point[] objects= new Point[4];
+
+		Point[] objects= new Point[2];
 		int[][] color=new int[800][600];
 		int numPlayers;
-		
+
 		private String [] IP;
-		private String contrasenya;
 		private String getRespuesta(){
 			return null;
 		}
 
-		public Juego(String[] IP,String contrasenya) {
+		public Juego(String[] IP) {
 			this.IP=IP;
-			this.contrasenya=contrasenya;
+			new Thread(this).run();
 		}
 
 		@Override
 		public void run() {
 			try {
-				Thread.sleep(5000);
+				Thread.sleep(100);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
