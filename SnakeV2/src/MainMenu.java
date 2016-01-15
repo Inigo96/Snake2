@@ -4,6 +4,8 @@ import java.awt.event.ActionListener;
 
 import javax.swing.*;
 
+import sockets.SocketCliente;
+
 
 
 public class MainMenu extends JPanel{
@@ -44,7 +46,7 @@ public class MainMenu extends JPanel{
 				// TODO Auto-generated method stub
 				ENDMenu(v);
 
-				v.add(new Online(v));
+				v.add(new OnlineMenu(v,new SocketCliente()));
 			}
 		});
 		

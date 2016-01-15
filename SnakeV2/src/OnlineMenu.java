@@ -1,11 +1,15 @@
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.net.UnknownHostException;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+
+import sockets.SocketCliente;
 
 public class OnlineMenu extends JPanel{
 
@@ -16,7 +20,7 @@ public class OnlineMenu extends JPanel{
 	
 	JLabel fondo;
 	
-	public OnlineMenu(Ventana v) {		
+	public OnlineMenu(Ventana v, SocketCliente sc) {		
 		
 		
 		this.setLayout(null);
@@ -31,7 +35,18 @@ public class OnlineMenu extends JPanel{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
+				
+				try {
+					sc.envioInfo("0");
+				} catch (UnknownHostException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 
+				
 			}
 		});
 		Ranking = new JButton("RANKING");//TODO añadir icon y action listener
@@ -40,7 +55,17 @@ public class OnlineMenu extends JPanel{
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
+				// TODO Auto-generated method stu
+				
+				try {
+					sc.envioInfo("RANK");
+				} catch (UnknownHostException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				
 			}
 		});
@@ -50,6 +75,8 @@ public class OnlineMenu extends JPanel{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
+				ENDMenu();
+				
 				v.add(new MainMenu(v));
 				
 			}
@@ -69,6 +96,12 @@ public class OnlineMenu extends JPanel{
 		
 		v.setVisible(true);
 			
+	}
+	
+	public void ENDMenu(){
+		
+		this.removeAll();
+		
 	}
 	
 }

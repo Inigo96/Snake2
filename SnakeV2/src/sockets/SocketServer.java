@@ -25,6 +25,8 @@ public class SocketServer {
 	 * 1 Borrar usuario de cola por haberse salido
 	 * 2 Pregunta acerca de si tiene ya contrincantes
 	 * String (referencia) cuando 
+	 * TODO BD nombre
+	 * TODO rank Pedir datos de servidor
 	 */
 
 	/*
@@ -125,8 +127,9 @@ public class SocketServer {
 
 	private class Juego implements Runnable{
 		
-		ArrayList<Point> objects;
+		Point[] objects= new Point[4];
 		int[][] color=new int[800][600];
+		int numPlayers;
 		
 		private String [] IP;
 		private String contrasenya;
@@ -146,26 +149,26 @@ public class SocketServer {
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-			for(int a=0;a<objects.size();a++){
-				
-				
-				if(objects.get(a).x < 0 || objects.get(a).x >800 || objects.get(a).y < 0 || objects.get(a).y>600){
-					objects.remove(a);
-				}
-				
-				if(objects.get(a).x>0 && objects.get(a).y>0 && objects.get(a).x<799 && objects.get(a).y<599){
-					if(color[objects.get(a).x][objects.get(a).y]!=(a & 0) || color[objects.get(a).x+1][objects.get(a).y]!=(a & 0) ||
-							color[objects.get(a).x-1][objects.get(a).y]!=(a & 0) || color[objects.get(a).x][objects.get(a).y+1]!=(a & 0)||
-							color[objects.get(a).x][objects.get(a).y-1]!=(a & 0) ){
-						objects.remove(a);
+			for(int a=0;a<4;a++){
+
+				if(objects[a]!=null){
+					if(objects[a].x < 0 || objects[a].x >800 || objects[a].y < 0 || objects[a].y>600){
+						objects[a]=null;
+					}
+
+					if(objects[a].x>0 && objects[a].y>0 && objects[a].x<799 && objects[a].y<599){
+						if(color[objects[a].x][objects[a].y]!=(a & 0) || color[objects[a].x+1][objects[a].y]!=(a & 0) ||
+								color[objects[a].x-1][objects[a].y]!=(a & 0) || color[objects[a].x][objects[a].y+1]!=(a & 0)||
+								color[objects[a].x][objects[a].y-1]!=(a & 0) ){
+							objects[a]=null;
+						}
+					}
+					if(objects[a].x>0 && objects[a].y>0 && objects[a].x<799 && objects[a].y<599){
+						color[Math.round((float)(objects[a].x+objects[a].x))][Math.round((float)(objects[a].y+objects[a].y))]= a;
 					}
 				}
-				if(objects.get(a).x>0 && objects.get(a).y>0 && objects.get(a).x<799 && objects.get(a).y<599){
-					color[Math.round((float)(objects.get(a).x+objects.get(a).x))][Math.round((float)(objects.get(a).y+objects.get(a).y))]= a;
-				}
 			}
-			
-			if(objects.size()<=1){
+			if(numPlayers<=1){
 				// TODO terminar partida
 			}
 			// TODO Comenzar Juego -> A poder ser dejarme una variable que poder coger y praparado para enviar con get
