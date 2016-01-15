@@ -25,6 +25,8 @@ public class SocketServer {
 	 * 1 Borrar usuario de cola por haberse salido
 	 * 2 Pregunta acerca de si tiene ya contrincantes
 	 * String (referencia) cuando 
+	 * TODO BD nombre
+	 * TODO rank Pedir datos de servidor
 	 */
 
 	/*

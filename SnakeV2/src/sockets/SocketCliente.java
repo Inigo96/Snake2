@@ -5,7 +5,7 @@ public class SocketCliente {
 
 	private static Socket socket;
 
-	public void initClient() throws UnknownHostException, IOException{
+	public String envioInfo(String datoEnvio) throws UnknownHostException, IOException{
 		final int PUERTO=5000;
 		final String HOST = "localhost";
 		InetAddress address = InetAddress.getByName(HOST);
@@ -15,28 +15,15 @@ public class SocketCliente {
 		OutputStream os = socket.getOutputStream();
 		OutputStreamWriter osw = new OutputStreamWriter(os);
 		BufferedWriter bw = new BufferedWriter(osw);
-
-		String number = "2";
-
-		String sendMessage = "6\n";
-		bw.write(sendMessage);
+		bw.write(datoEnvio);
 		bw.flush();
-		System.out.println("Message sent to the server : "+sendMessage);
-
 		//Get the return message from the server
 		InputStream is = socket.getInputStream();
 		InputStreamReader isr = new InputStreamReader(is);
 		BufferedReader br = new BufferedReader(isr);
 		String message = br.readLine();
-		System.out.println("Message received from the server : " +message);
-
 		socket.close();
+		return message;
 
 	}
-
-	public static void main(String[] args) throws UnknownHostException, IOException {
-		// TODO Auto-generated method stub
-		new SocketCliente().initClient();
-	}
-
 }
