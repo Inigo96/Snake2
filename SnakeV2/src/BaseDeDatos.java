@@ -5,18 +5,12 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-/** Métodos útiles para base de datos.
- * Clase con métodos estáticos para gestionar una sola base de datos
- * @author Andoni Eguíluz Morán
- * Facultad de Ingeniería - Universidad de Deusto
+/** Base de datos.
+ * @author ander.areizagab
  */
 public class BaseDeDatos {
 	
 
-	// ------------------------------------
-	// VALIDO PARA CUALQUIER BASE DE DATOS
-	// ------------------------------------
-	
 	private static Connection connection = null;
 	private static Statement statement = null;
 
@@ -73,8 +67,6 @@ public class BaseDeDatos {
 				"(usuario string, contraseña string, puntuacion_maxima int" +
 				", ultima_puntuacion int)");
 		} catch (SQLException e) {
-			// Si hay excepción es que la tabla ya existía (lo cual es correcto)
-			// e.printStackTrace();  
 		}
 	}
 
