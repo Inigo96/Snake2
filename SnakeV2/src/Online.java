@@ -1,4 +1,4 @@
-import java.awt.event.ActionEvent;
+ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.net.UnknownHostException;
@@ -10,14 +10,19 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import sockets.SocketCliente;
+
 
 public class Online extends JPanel{
 
-	
+	boolean conex;
 	private sockets.SocketCliente serverCliente;
 	JLabel fondo;
 
 	public Online(Ventana v) {
+		
+		conex=true;
+		
 		JTextField text=new JTextField("Introducir usuario");
 		JButton boton=new JButton("Empezar");
 		boton.addActionListener(new ActionListener() {
@@ -25,13 +30,20 @@ public class Online extends JPanel{
 			public void actionPerformed(ActionEvent e) {
 				try{
 					serverCliente=new sockets.SocketCliente();
-					serverCliente.initClient();
+					serverCliente.envioInfo("BD"+text.getText());
 					
 				}catch(Exception y){
+					conex=false;
 					JOptionPane.showMessageDialog(
 							null, "Error al conectarse ", "Conexion", JOptionPane.ERROR_MESSAGE);
 				}
-
+				
+				ENDMenu(v);
+				if(conex){
+					v.add(new OnlineMenu(v, serverCliente));
+				}
+				
+				v.add(new MainMenu(v));
 			}
 		});
 		this.setLayout(null);
@@ -52,6 +64,11 @@ public class Online extends JPanel{
 		
 		v.setVisible(true);
 		
+		
+	}
+	
+	public void ENDMenu(Ventana v){
+		v.remove(this);
 		
 	}
 

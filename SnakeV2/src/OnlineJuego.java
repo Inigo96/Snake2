@@ -27,7 +27,7 @@ public class OnlineJuego extends JPanel{
 			
 		objects= new Point[4];
 		
-		new Player(true);
+		yo=new Player(true);
 		
 		pointList= new ArrayList<Ellipse2D>();
 		
@@ -113,6 +113,7 @@ public class OnlineJuego extends JPanel{
 		for(int j=0;j<4;j++){
 			if(objects[j]!=null){
 				objects[j].setLocation(objects[j].x, objects[j].y);
+				addPoint(objects[j]);
 			}
 		}
 		

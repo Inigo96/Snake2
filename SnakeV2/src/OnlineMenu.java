@@ -45,8 +45,9 @@ public class OnlineMenu extends JPanel{
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-
+				ENDMenu();
 				
+				v.add(new OnlineJuego(v, 1));		
 			}
 		});
 		Ranking = new JButton("RANKING");//TODO añadir icon y action listener

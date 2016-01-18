@@ -46,7 +46,7 @@ public class MainMenu extends JPanel{
 				// TODO Auto-generated method stub
 				ENDMenu(v);
 
-				v.add(new OnlineMenu(v,new SocketCliente()));
+				v.add(new Online(v));
 			}
 		});
 		
