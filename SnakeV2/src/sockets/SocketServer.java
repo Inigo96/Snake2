@@ -79,7 +79,7 @@ public class SocketServer {
 				}else if(number.equals("RANK")){
 					//Peticion BD
 				}else if(number.substring(0,1).equals("BD")){
-					number.substring(2,number.length()-1);
+					number.substring(3,number.length()-1);
 					//Peticion BD
 				}else{
 					//Enviar mensaje a interpretar por el cliente
@@ -148,35 +148,37 @@ public class SocketServer {
 
 		@Override
 		public void run() {
-			try {
-				Thread.sleep(100);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-			for(int a=0;a<4;a++){
-
-				if(objects[a]!=null){
-					if(objects[a].x < 0 || objects[a].x >800 || objects[a].y < 0 || objects[a].y>600){
-						objects[a]=null;
-					}
-
-					if(objects[a].x>0 && objects[a].y>0 && objects[a].x<799 && objects[a].y<599){
-						if(color[objects[a].x][objects[a].y]!=(a & 0) || color[objects[a].x+1][objects[a].y]!=(a & 0) ||
-								color[objects[a].x-1][objects[a].y]!=(a & 0) || color[objects[a].x][objects[a].y+1]!=(a & 0)||
-								color[objects[a].x][objects[a].y-1]!=(a & 0) ){
+			do{
+				try {
+					Thread.sleep(75);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				for(int a=0;a<4;a++){
+	
+					if(objects[a]!=null){
+						if(objects[a].x < 0 || objects[a].x >800 || objects[a].y < 0 || objects[a].y>600){
 							objects[a]=null;
 						}
-					}
-					if(objects[a].x>0 && objects[a].y>0 && objects[a].x<799 && objects[a].y<599){
-						color[Math.round((float)(objects[a].x+objects[a].x))][Math.round((float)(objects[a].y+objects[a].y))]= a;
+	
+						if(objects[a].x>0 && objects[a].y>0 && objects[a].x<799 && objects[a].y<599){
+							if(color[objects[a].x][objects[a].y]!=(a & 0) || color[objects[a].x+1][objects[a].y]!=(a & 0) ||
+									color[objects[a].x-1][objects[a].y]!=(a & 0) || color[objects[a].x][objects[a].y+1]!=(a & 0)||
+									color[objects[a].x][objects[a].y-1]!=(a & 0) ){
+								objects[a]=null;
+							}
+						}
+						if(objects[a].x>0 && objects[a].y>0 && objects[a].x<799 && objects[a].y<599){
+							color[Math.round((float)(objects[a].x+objects[a].x))][Math.round((float)(objects[a].y+objects[a].y))]= a;
+						}
 					}
 				}
-			}
-			if(numPlayers<=1){
-				// TODO terminar partida
-			}
-			// TODO Comenzar Juego -> A poder ser dejarme una variable que poder coger y praparado para enviar con get
-			//TODO al terminar partida hay que guardarla en BD, borrarla de enPartida y codigoAccesoAJuego
+				if(numPlayers<=1){
+					// TODO terminar partida
+				}
+				// TODO Comenzar Juego -> A poder ser dejarme una variable que poder coger y praparado para enviar con get
+				//TODO al terminar partida hay que guardarla en BD, borrarla de enPartida y codigoAccesoAJuego
+			}while(numPlayers<=1);
 		}		
 
 	}
