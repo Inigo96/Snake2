@@ -46,7 +46,6 @@ public class pruebaServer {
 	                	PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
 	                	BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 	                	String line=in.readLine();
-//	                	while((line = in.readLine()) != null)
 	                	System.out.println(line);
 	                    System.out.println("hecho");
 	                    out.println("dd");

@@ -23,7 +23,6 @@ public class OnlineMenu extends JPanel{
 	
 	public OnlineMenu(Ventana v, SocketCliente sc) {		
 		
-		
 		this.setLayout(null);
 		
 		fondo = new JLabel();

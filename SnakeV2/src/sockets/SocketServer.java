@@ -41,7 +41,7 @@ public class SocketServer {
 			random=new SecureRandom();
 			cola=new LinkedList<>();
 			enPartida=new HashMap<>();
-			final int port = 64113;
+			final int port = 50105;
 			ServerSocket serverSocket = new ServerSocket(port);
 			System.out.println("Server Started and listening to the port 5000");
 
@@ -140,17 +140,23 @@ public class SocketServer {
 
 		private String [] usuarios;
 		
-		private String conexion(String[] infoUsuario){
+		public String conexion(String[] infoUsuario){
 			if(infoUsuario.equals(usuarios[0])){
 				entradaInfoUsuarioSinProcesar[0]=infoUsuario[1];
+				return infoSalidaProcesado[1];
 			}else{
 				entradaInfoUsuarioSinProcesar[1]=infoUsuario[1];
+				return infoSalidaProcesado[0];
 			}
-			return infoSalidaProcesado[0]+",,,"+infoSalidaProcesado[1];
+			
 		}
 
 		public Juego(String[] usuarios) {
 			this.usuarios=usuarios;
+			this.infoSalidaProcesado=new String[2];
+			infoSalidaProcesado[0]="100,,,100";
+			infoSalidaProcesado[1]="700,,,500";
+			this.entradaInfoUsuarioSinProcesar=new String[2];
 			try {
 				Thread.sleep(75);
 			} catch (InterruptedException e) {
@@ -184,9 +190,6 @@ public class SocketServer {
 							color[Math.round((float)(objects[a].x+objects[a].x))][Math.round((float)(objects[a].y+objects[a].y))]= a;
 						}
 					}
-				}
-				if(numPlayers<=1){
-					// TODO terminar partida
 				}
 				// TODO Comenzar Juego -> A poder ser dejarme una variable que poder coger y praparado para enviar con get
 				//TODO al terminar partida hay que guardarla en BD, borrarla de enPartida y codigoAccesoAJuego

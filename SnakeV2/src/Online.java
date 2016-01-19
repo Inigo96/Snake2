@@ -29,19 +29,19 @@ public class Online extends JPanel{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try{
-					serverCliente=new sockets.SocketCliente("BD"+text.getText());					
+					serverCliente=new sockets.SocketCliente("BD"+text.getText());	
+					ENDMenu(v);
+					v.add(new OnlineMenu(v, serverCliente));
 				}catch(Exception y){
-					conex=false;
 					JOptionPane.showMessageDialog(
 							null, "Error al conectarse ", "Conexion", JOptionPane.ERROR_MESSAGE);
+					ENDMenu(v);
+					v.add(new MainMenu(v));
 				}
 				
-				ENDMenu(v);
-				if(conex){
-					v.add(new OnlineMenu(v, serverCliente));
-				}
 				
-				v.add(new MainMenu(v));
+				
+				
 			}
 		});
 		this.setLayout(null);

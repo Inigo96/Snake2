@@ -1,22 +1,23 @@
 package sockets;
 import java.net.*;
 import java.io.*;
+
+import org.omg.CORBA.Environment;
 public class SocketCliente {
 
 	private static Socket socket;
-	
+
 	String usuario;
 	String contrasenyaJuego;
-	
+
 	public SocketCliente(String usuario) throws UnknownHostException, IOException {
 		logearseUsuario(usuario);
 		this.usuario=usuario;
-		
 	}
-	
-	private String envioInfo(String datoEnvio) throws UnknownHostException, IOException{
-		final int PUERTO=64113;
-		final String HOST = "192.168.1.38";
+
+	public String envioInfo(String datoEnvio) throws UnknownHostException, IOException{
+		final int PUERTO=60507;
+		final String HOST = "10.164.53.38";
 		InetAddress address = InetAddress.getByName(HOST);
 		socket = new Socket(address, PUERTO);
 
@@ -36,23 +37,27 @@ public class SocketCliente {
 	}
 
 	private void logearseUsuario(String usuario) throws UnknownHostException, IOException{		
-		envioInfo(usuario);
+		envioInfo("BD"+usuario);
 	}
-	
+
 	public String pedirRanking() throws UnknownHostException, IOException{
 		return envioInfo("RANK");		
 	}
-	
+
 	public boolean introducirEnCola(){
+
 		try {
-			if (envioInfo(0+usuario).equals("200"));
-			return true;
-		} catch (UnknownHostException e) {			
+			if (envioInfo(0+usuario).equals("200")) return true;;				
+		} catch (UnknownHostException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		return false;
 	}
-	
+
 	public boolean yaTieneContrincantes(){
 		try {
 			this.contrasenyaJuego=envioInfo(2+usuario);
@@ -63,13 +68,25 @@ public class SocketCliente {
 		}	
 		return false;
 	}
-	
+
 	public String movsJuego(String movPropio) throws UnknownHostException, IOException{
-		String movs= envioInfo(this.contrasenyaJuego+",,,"+this.usuario+",,,"+movPropio);
-		if(movs.equals("404")){
-			throw new IOException();
-		}else{
-			return movs;
+		return envioInfo(this.contrasenyaJuego+",,,"+this.usuario+",,,"+movPropio);
+	
+	}
+
+	public static void main(String[] args) {
+		try {
+			SocketCliente b=new SocketCliente("gg");
+//			System.out.println(b.introducirEnCola());
+			System.out.println(b.envioInfo("fg"));
+			
+		} catch (UnknownHostException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+
 	}
 }
