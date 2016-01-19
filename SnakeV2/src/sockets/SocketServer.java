@@ -42,7 +42,7 @@ public class SocketServer {
 			random=new SecureRandom();
 			cola=new LinkedList<>();
 			enPartida=new HashMap<>();
-			final int port = 5000;
+			final int port = 64113;
 			ServerSocket serverSocket = new ServerSocket(port);
 			System.out.println("Server Started and listening to the port 5000");
 
