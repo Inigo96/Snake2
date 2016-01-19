@@ -1,5 +1,10 @@
 package sockets;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.math.BigInteger;
 import java.net.*;
 import java.security.SecureRandom;
@@ -8,13 +13,10 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.awt.Point;
-import java.io.*;
 
 public class SocketServer {
 
@@ -22,7 +24,6 @@ public class SocketServer {
 	private Queue<String> cola;
 	private HashMap<String, Juego> enPartida;
 	private HashMap<String, String> codigoAccesoAJuego;
-	// private ArrayList<Juego> enPartida;
 	private final int numJugadoresPorPartida = 2;
 	private SecureRandom random;
 
@@ -44,9 +45,9 @@ public class SocketServer {
 			random = new SecureRandom();
 			cola = new LinkedList<>();
 			enPartida = new HashMap<>();
-			final int port = 50105;
+			final int port = 7007;
 			ServerSocket serverSocket = new ServerSocket(port);
-			System.out.println("Server Started and listening to the port 5000");
+			System.out.println("Server Started and listening to the port");
 
 			// Server is running always. This is done using this while(true)
 			// loop
@@ -82,11 +83,13 @@ public class SocketServer {
 						if (respuesta == null)
 							respuesta = "404";
 					}
-				} else if (stringCliente.equals("RANK")) {
-					// BD clasificacion
+				} else if (stringCliente.substring(0, 4).equals("RANK")) {
+					respuesta=BaseDeDatos.enviarUsuario(stringCliente.substring(4,stringCliente.length()));
 				} else if (stringCliente.substring(0, 2).equals("BD")) {
 					// Esta en la BD el usuario y sino introducir
-					stringCliente.substring(2, stringCliente.length());
+					System.out.println(stringCliente.substring(2, stringCliente.length()));
+					BaseDeDatos.crearUsuario(stringCliente.substring(2, stringCliente.length()));
+					respuesta="200";
 				} else {
 					// Enviar mensaje a interpretar por el cliente
 					Juego juego;
@@ -113,7 +116,7 @@ public class SocketServer {
 						usuarios[a] = (cola.peek());
 						codigoAccesoAJuego.put(cola.poll(), contrasenya);
 					}
-					enPartida.put(contrasenya, new Juego(usuarios));
+					enPartida.put(contrasenya, new Juego(usuarios,contrasenya));
 
 				}
 			}
@@ -122,6 +125,7 @@ public class SocketServer {
 		} finally {
 			try {
 				socket.close();
+				BaseDeDatos.close();
 			} catch (Exception e) {
 			}
 		}
@@ -139,8 +143,7 @@ public class SocketServer {
 
 		private Point[] objects = new Point[2];
 		private int[][] color = new int[800][600];
-		private int numPlayers;
-
+		private String contrasenya;
 		private String[] infoSalidaProcesado;
 
 		private String[] entradaInfoUsuarioSinProcesar;
@@ -158,11 +161,16 @@ public class SocketServer {
 
 		}
 
-		public Juego(String[] usuarios) {
+		public Juego(String[] usuarios,String contrasenya) {
 			this.usuarios = usuarios;
+			this.contrasenya=contrasenya;
+			objects[0]=new Point();
+			objects[1]=new Point();
 			this.infoSalidaProcesado = new String[2];
 			infoSalidaProcesado[0] = "100,,,100";
 			infoSalidaProcesado[1] = "700,,,500";
+			entradaInfoUsuarioSinProcesar[0] = "100,,,100";
+			entradaInfoUsuarioSinProcesar[1] = "700,,,500";
 			this.entradaInfoUsuarioSinProcesar = new String[2];
 			try {
 				Thread.sleep(75);
@@ -214,7 +222,16 @@ public class SocketServer {
 				// poder coger y praparado para enviar con get
 				// TODO al terminar partida hay que guardarla en BD, borrarla de
 				// enPartida y codigoAccesoAJuego
-			} while (numPlayers <= 1);
+			} while (objects[0]!=null||objects[0]!=null);
+			if(objects[0]==null){
+				BaseDeDatos.modificarPuntuacion(usuarios[1]);
+			}else{
+				BaseDeDatos.modificarPuntuacion(usuarios[1]);
+			}
+			enPartida.remove(contrasenya);
+			codigoAccesoAJuego.remove(usuarios[0]);
+			codigoAccesoAJuego.remove(usuarios[1]);
+			
 		}
 
 	}
@@ -299,22 +316,6 @@ public class SocketServer {
 			}
 		}
 
-		public static void mostrarUsuario(String usuario) {
-			String sentencia = ("select usuario, puntuacion from usuarios");
-			try {
-				boolean n = true;
-				ResultSet rs = statement.executeQuery(sentencia);
-				while (rs.next() && n == true) {
-					if (usuario == rs.getString(1)) {
-						System.out.println(rs.getString(1) + ": "
-								+ rs.getInt("puntuacion"));
-						n = false;
-					}
-				}
-			} catch (SQLException e) {
-			}
-		}
-
 		public static void crearUsuario(String usuario) {
 			String sentencia = ("insert into usuarios values('" + usuario + "',0)");
 			try {
@@ -338,6 +339,26 @@ public class SocketServer {
 				}
 			} catch (SQLException e) {
 			}
+		}
+		
+		public static String enviarUsuario(String usuario) {
+			String mensaje="Error";
+			try {
+				boolean n = true;
+				ResultSet rs = statement.executeQuery("select usuario, puntuacion from usuarios");
+				while (rs.next() && n == true) {
+					if (usuario == rs.getString(1)) {
+						mensaje=(rs.getString(1) + ": "
+								+ rs.getInt("puntuacion"));
+					}else{
+						mensaje= "El usuario requerido no existe";
+					}
+				}
+			} catch (SQLException e) {
+				return "Error";
+			}
+			return mensaje;
+			
 		}
 	}
 }

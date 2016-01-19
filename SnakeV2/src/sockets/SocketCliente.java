@@ -16,8 +16,8 @@ public class SocketCliente {
 	}
 
 	public String envioInfo(String datoEnvio) throws UnknownHostException, IOException{
-		final int PUERTO=60507;
-		final String HOST = "10.164.53.38";
+		final int PUERTO=64113;
+		final String HOST = "79.145.24.35";
 		InetAddress address = InetAddress.getByName(HOST);
 		socket = new Socket(address, PUERTO);
 
@@ -41,7 +41,7 @@ public class SocketCliente {
 	}
 
 	public String pedirRanking() throws UnknownHostException, IOException{
-		return envioInfo("RANK");		
+		return envioInfo("RANK"+usuario);		
 	}
 
 	public boolean introducirEnCola(){
