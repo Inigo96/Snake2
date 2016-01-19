@@ -36,7 +36,7 @@ public class OnlineMenu extends JPanel{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				if(sc.introducirEnCola());
+				if(sc.introducirEnCola()) JOptionPane.showMessageDialog(new JFrame(), "El sever esta en busca de una partida");;
 				ENDMenu();
 				
 				v.add(new OnlineJuego(v, 1));		
