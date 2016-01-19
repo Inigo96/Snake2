@@ -35,16 +35,7 @@ public class OnlineMenu extends JPanel{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				
-				try {
-					sc.envioInfo("0");
-				} catch (UnknownHostException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+				sc.introducirEnCola();
 				ENDMenu();
 				
 				v.add(new OnlineJuego(v, 1));		
@@ -58,15 +49,17 @@ public class OnlineMenu extends JPanel{
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stu
 				
-				try {
-					sc.envioInfo("RANK");
-				} catch (UnknownHostException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+				
+					try {
+						sc.pedirRanking();
+					} catch (UnknownHostException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				
 				
 			}
 		});

@@ -29,9 +29,7 @@ public class Online extends JPanel{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try{
-					serverCliente=new sockets.SocketCliente();
-					serverCliente.envioInfo("BD"+text.getText());
-					
+					serverCliente=new sockets.SocketCliente("BD"+text.getText());					
 				}catch(Exception y){
 					conex=false;
 					JOptionPane.showMessageDialog(

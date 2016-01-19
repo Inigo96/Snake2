@@ -79,7 +79,7 @@ public class SocketServer {
 				}else if(number.equals("RANK")){
 					//Peticion BD
 				}else if(number.substring(0,1).equals("BD")){
-					number.substring(3,number.length()-1);
+					number.substring(2,number.length()-1);
 					//Peticion BD
 				}else{
 					//Enviar mensaje a interpretar por el cliente
