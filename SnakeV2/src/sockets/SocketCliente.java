@@ -65,6 +65,11 @@ public class SocketCliente {
 	}
 	
 	public String movsJuego(String movPropio) throws UnknownHostException, IOException{
-		return envioInfo(this.contrasenyaJuego+"\n"+this.usuario+"\n"+movPropio);
+		String movs= envioInfo(this.contrasenyaJuego+",,,"+this.usuario+",,,"+movPropio);
+		if(movs.equals("404")){
+			throw new IOException();
+		}else{
+			return movs;
+		}
 	}
 }

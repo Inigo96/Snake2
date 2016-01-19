@@ -17,12 +17,11 @@ public class SocketServer {
 	private HashMap<String, Juego> enPartida;
 	private HashMap<String, String> codigoAccesoAJuego;
 	//	private ArrayList<Juego> enPartida;
-	private final int numJugadoresPorPartida=4;
+	private final int numJugadoresPorPartida=2;
 	private SecureRandom random;
 
 	/*3 valores int(formato String) Usuario ;
 	 * 0 Introducir IP cola
-	 * 1 Borrar usuario de cola por haberse salido
 	 * 2 Pregunta acerca de si tiene ya contrincantes
 	 * String (referencia) cuando 
 	 * TODO BD nombre
@@ -52,39 +51,38 @@ public class SocketServer {
 				//Reading the message from the client
 				socket = serverSocket.accept();
 				BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-				String number = br.readLine();
+				String stringCliente = br.readLine();
 				String respuesta = null;
-				if(number.equals("0")){
+				if(stringCliente.substring(0,1).equals("0")){
 					//Introduce al cliente en la lista si no se encuentra en ella
-					String IP=socket.getRemoteSocketAddress().toString();
-					if(!cola.contains(IP)){
-						cola.add(IP);
+					if(!cola.contains(stringCliente.substring(1,stringCliente.length()))){
+						cola.add(stringCliente.substring(1,stringCliente.length()));
 						respuesta="200";
 					}else{
 						respuesta="404";
-					}
-				}else if(number.equals("1")){
-					//Salir de la lista 
-					if (cola.remove(socket.getInetAddress().toString())) respuesta="201"; else respuesta="404";					
-				}else if(number.equals("2")){
+					}				
+				
+				}else if(stringCliente.substring(0,1).equals("2")){
 					//Mirar si ya tiene contrincantes
-					String IP=socket.getRemoteSocketAddress().toString();
-					if(cola.contains(IP)){
+					if(cola.contains(stringCliente.substring(1,stringCliente.length()))){
 						respuesta="300";
 					}else{
 						//Si los tiene darles el código del juego en el que están jugando
-						respuesta=codigoAccesoAJuego.get(socket.getRemoteSocketAddress().toString());
+						respuesta=codigoAccesoAJuego.get(stringCliente.substring(1,stringCliente.length()));
 						if(respuesta==null)respuesta="404";
 					}
-				}else if(number.equals("RANK")){
-					//Peticion BD
-				}else if(number.substring(0,1).equals("BD")){
-					number.substring(2,number.length()-1);
-					//Peticion BD
+				}else if(stringCliente.equals("RANK")){
+					//BD clasificacion
+				}else if(stringCliente.substring(0,2).equals("BD")){
+					//Esta en la BD el usuario y sino introducir
+					stringCliente.substring(2,stringCliente.length());
 				}else{
 					//Enviar mensaje a interpretar por el cliente
 					Juego juego;
-					if((juego=enPartida.get(number))!=null) respuesta=juego.getRespuesta() ;
+					String mensajeCliente[]=stringCliente.split(",,,");
+					if((juego=enPartida.get(mensajeCliente[0]))!=null){						
+						respuesta=juego.conexion(new String[]{mensajeCliente[1],mensajeCliente[2]}) ;
+					}
 					else respuesta="404";
 				}
 				//Sending response back to the client.
@@ -93,17 +91,17 @@ public class SocketServer {
 				BufferedWriter bw = new BufferedWriter(osw);
 				bw.write(respuesta);
 				bw.flush();
-				if(cola.size()==4){
+				if(cola.size()==numJugadoresPorPartida){
 					String contrasenya=null;
 					do{
 						contrasenya=randomNumber();
 					}while(enPartida.containsKey(contrasenya));
-					String IP[]=new String[numJugadoresPorPartida];
+					String usuarios[]=new String[numJugadoresPorPartida];
 					for(int a=0;a<numJugadoresPorPartida;a++){
-						IP[a]=(cola.peek());
-						codigoAccesoAJuego.put(cola.poll(),contrasenya );
+						usuarios[a]=(cola.peek());
+						codigoAccesoAJuego.put(cola.poll(),contrasenya);
 					}
-					enPartida.put(contrasenya, new Juego(IP));
+					enPartida.put(contrasenya, new Juego(usuarios));
 
 				}
 			}
@@ -123,7 +121,7 @@ public class SocketServer {
 	}
 
 	private String randomNumber(){
-		return new BigInteger(130,random).toString(32);
+		return "9"+new BigInteger(130,random).toString(32);
 	}
 
 	public static void main(String[] args) {
@@ -132,17 +130,31 @@ public class SocketServer {
 
 	private class Juego implements Runnable{
 
-		Point[] objects= new Point[2];
-		int[][] color=new int[800][600];
-		int numPlayers;
+		private Point[] objects= new Point[2];
+		private int[][] color=new int[800][600];
+		private int numPlayers;
+		
+		private String[] infoSalidaProcesado;
+		
+		private String[] entradaInfoUsuarioSinProcesar;
 
-		private String [] IP;
-		private String getRespuesta(){
-			return null;
+		private String [] usuarios;
+		
+		private String conexion(String[] infoUsuario){
+			if(infoUsuario.equals(usuarios[0])){
+				entradaInfoUsuarioSinProcesar[0]=infoUsuario[1];
+			}else{
+				entradaInfoUsuarioSinProcesar[1]=infoUsuario[1];
+			}
+			return infoSalidaProcesado[0]+",,,"+infoSalidaProcesado[1];
 		}
 
-		public Juego(String[] IP) {
-			this.IP=IP;
+		public Juego(String[] usuarios) {
+			this.usuarios=usuarios;
+			try {
+				Thread.sleep(75);
+			} catch (InterruptedException e) {
+			}
 			new Thread(this).run();
 		}
 
@@ -154,7 +166,7 @@ public class SocketServer {
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
-				for(int a=0;a<4;a++){
+				for(int a=0;a<2;a++){
 	
 					if(objects[a]!=null){
 						if(objects[a].x < 0 || objects[a].x >800 || objects[a].y < 0 || objects[a].y>600){

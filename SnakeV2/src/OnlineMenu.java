@@ -7,6 +7,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import sockets.SocketCliente;
@@ -35,7 +36,7 @@ public class OnlineMenu extends JPanel{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				sc.introducirEnCola();
+				if(sc.introducirEnCola());
 				ENDMenu();
 				
 				v.add(new OnlineJuego(v, 1));		
@@ -46,18 +47,17 @@ public class OnlineMenu extends JPanel{
 			
 
 			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stu
-				
-				
+			public void actionPerformed(ActionEvent e) {		
 					try {
-						sc.pedirRanking();
+						JOptionPane.showMessageDialog(new JFrame(), sc.pedirRanking());						
 					} catch (UnknownHostException e1) {
 						// TODO Auto-generated catch block
-						e1.printStackTrace();
+						JOptionPane.showMessageDialog(
+								null, "Error al conectarse al servidor", "Conexion", JOptionPane.ERROR_MESSAGE);
 					} catch (IOException e1) {
 						// TODO Auto-generated catch block
-						e1.printStackTrace();
+						JOptionPane.showMessageDialog(
+								null, "Error al conectarse al servidor", "Conexion", JOptionPane.ERROR_MESSAGE);
 					}
 				
 				
