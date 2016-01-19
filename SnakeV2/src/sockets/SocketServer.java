@@ -180,6 +180,11 @@ public class SocketServer {
 					e.printStackTrace();
 				}
 				for (int a = 0; a < 2; a++) {
+					
+					for(int b=0;b<2;b++){
+						String xy=entradaInfoUsuarioSinProcesar[b];
+						objects[b].setLocation(Integer.parseInt(xy.split(",,,")[0]),Integer.parseInt(xy.split(",,,")[1]));
+					}
 
 					if (objects[a] != null) {
 						if (objects[a].x < 0 || objects[a].x > 800

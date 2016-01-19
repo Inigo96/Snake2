@@ -50,7 +50,7 @@ public class OnlineMenu extends JPanel{
 				}
 				ENDMenu();
 				
-				v.add(new OnlineJuego(v, 1));		
+				v.add(new OnlineJuego(v, 1,sc));		
 			}
 		});
 		Ranking = new JButton("RANKING");//TODO añadir icon y action listener

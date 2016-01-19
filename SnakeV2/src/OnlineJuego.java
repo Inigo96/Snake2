@@ -7,10 +7,14 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Point2D;
+import java.io.IOException;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JPanel;
+
+import sockets.SocketCliente;
 
 public class OnlineJuego extends JPanel{
 
@@ -18,14 +22,17 @@ public class OnlineJuego extends JPanel{
 	List<Ellipse2D> pointList;
 	Point[] objects;
 	Player yo;
+	SocketCliente sc;
 
-	public OnlineJuego(Ventana v, int players){
+	public OnlineJuego(Ventana v, int players,SocketCliente sc){
+		
+		this.sc=sc;
 		
 		this.setLayout(null);
 		
 		this.setBackground(new java.awt.Color(255, 255, 255));
 			
-		objects= new Point[4];
+		objects= new Point[2];
 		
 		yo=new Player(true);
 		
@@ -109,6 +116,20 @@ public class OnlineJuego extends JPanel{
 	public void update() {
 		
 		objects[0].setLocation(yo.x,yo.y);
+		String xy=null;
+		try {
+			xy=sc.movsJuego(objects[0].x+",,,"+objects[0].y);
+		} catch (UnknownHostException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		String[] xy1=xy.split(",,,");
+		
+		objects[1].setLocation(Integer.parseInt(xy1[0]),Integer.parseInt(xy1[1]));
 		
 		for(int j=0;j<4;j++){
 			if(objects[j]!=null){
