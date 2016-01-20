@@ -23,6 +23,7 @@ public class OnlineJuego extends JPanel{
 	Point[] objects;
 	Player yo;
 	SocketCliente sc;
+	Ventana v;
 
 	public OnlineJuego(Ventana v, int players,SocketCliente sc,int posiX,int posiY){
 		
@@ -121,6 +122,9 @@ public class OnlineJuego extends JPanel{
 
 	public void update() {
 	
+		
+		objects[0].setLocation(yo.x,yo.y);
+		
 		String xy=null;
 		try {
 			xy=sc.movsJuego(objects[0].x+",,,"+objects[0].y);
@@ -138,9 +142,8 @@ public class OnlineJuego extends JPanel{
 		
 		objects[1].setLocation(Integer.parseInt(xy1[0]),Integer.parseInt(xy1[1]));
 		
-		for(int j=0;j<4;j++){
+		for(int j=0;j<2;j++){
 			if(objects[j]!=null){
-				objects[j].setLocation(objects[j].x, objects[j].y);
 				addPoint(objects[j]);
 			}
 		}
@@ -151,6 +154,10 @@ public class OnlineJuego extends JPanel{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		}
+		else{
+			v.removeAll();
+			v.add(new OnlineMenu(v, sc));
 		}
 		
 	}

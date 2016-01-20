@@ -35,7 +35,6 @@ public class SocketServer {
 	 * esperando
 	 */
 	public void initServer() {
-		System.out.println("j");
 		try {
 			BaseDeDatos.initBD("usuarios");
 			BaseDeDatos.crearTablaBD();
