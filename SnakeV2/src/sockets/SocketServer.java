@@ -35,6 +35,7 @@ public class SocketServer {
 	 * esperando
 	 */
 	public void initServer() {
+		System.out.println("j");
 		try {
 			BaseDeDatos.initBD("usuarios");
 			BaseDeDatos.crearTablaBD();
@@ -60,7 +61,6 @@ public class SocketServer {
 					if (!cola.contains(stringCliente.substring(1,
 							stringCliente.length()))) {
 						cola.add(stringCliente.substring(1,stringCliente.length()));
-						BaseDeDatos.modificarPuntuacion(stringCliente.substring(1,stringCliente.length()));
 						respuesta = "200";
 					} else {
 						respuesta = "404";
@@ -320,18 +320,9 @@ public class SocketServer {
 		}
 
 		public static void modificarPuntuacion(String usuario) {
-			String sentencia = ("select usuario from usuarios");
 			try {
-				boolean n = true;
-				ResultSet rs = statement.executeQuery(sentencia);
-				while (rs.next() && n == true) {
-					if (usuario == rs.getString(1)) {
-						statement
-						.executeUpdate("update puntuacion set puntuacion= puntuacion+1 where usuario='"
-								+ usuario + "'");
-						n = false;
-					}
-				}
+				statement.executeUpdate("update usuarios set puntuacion= puntuacion+1 where usuario='"
+						+ usuario + "'");
 			} catch (SQLException e) {
 			}
 		}
