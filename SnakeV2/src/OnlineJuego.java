@@ -34,6 +34,9 @@ public class OnlineJuego extends JPanel{
 			
 		objects= new Point[2];
 		
+		objects[0]=new Point(0, 0);
+		objects[1]=new Point(0, 0);
+		
 		objects[0].setLocation(posiX,posiY);
 		
 		yo=new Player(true);
