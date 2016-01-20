@@ -46,7 +46,6 @@ public class Ventana extends JFrame implements WindowListener{
 		long time = System.currentTimeMillis();
 		do {
 			if (System.currentTimeMillis() - time > 16.7) {
-				System.out.println("hi");
 				if (this.activePanel instanceof Updatable) {
 
 					((Updatable) this.activePanel).update();
@@ -127,7 +126,6 @@ class sonido1 extends Thread {
 					} catch (InterruptedException e) {
 					}
 				}
-//				System.out.println("Acabó!");
 				}
 			} else {
 				sonido.stop();

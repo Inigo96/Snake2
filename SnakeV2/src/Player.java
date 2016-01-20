@@ -22,7 +22,6 @@ public class Player extends JLabel implements Updatable{
 	boolean Bplayer;
 	
 	public Player(boolean n){
-		System.out.println("ddcf");
 		
 		speed=2;
 		Bplayer=n;

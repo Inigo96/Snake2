@@ -1,14 +1,9 @@
 package sockets;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
-import java.math.BigInteger;
 import java.net.*;
-import java.security.SecureRandom;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -17,6 +12,7 @@ import java.sql.Statement;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.UUID;
 import java.awt.Point;
 
 public class SocketServer {
@@ -26,7 +22,6 @@ public class SocketServer {
 	private HashMap<String, Juego> enPartida;
 	private HashMap<String, String> codigoAccesoAJuego;
 	private final int numJugadoresPorPartida = 2;
-	private SecureRandom random;
 
 	/*
 	 * 3 valores int(formato String) Usuario ; 0 Introducir IP cola 2 Pregunta
@@ -43,12 +38,11 @@ public class SocketServer {
 		try {
 			BaseDeDatos.initBD("usuarios");
 			BaseDeDatos.crearTablaBD();
-			random = new SecureRandom();
 			cola = new LinkedList<>();
 			enPartida = new HashMap<>();
+			codigoAccesoAJuego=new HashMap<>();
 			final int port = 1993;
 			ServerSocket serverSocket = new ServerSocket(port);
-			System.out.println("Server Started and listening to the port");
 
 			// Server is running always. This is done using this while(true)
 			// loop
@@ -65,8 +59,8 @@ public class SocketServer {
 					// ella
 					if (!cola.contains(stringCliente.substring(1,
 							stringCliente.length()))) {
-						cola.add(stringCliente.substring(1,
-								stringCliente.length()));
+						cola.add(stringCliente.substring(1,stringCliente.length()));
+						BaseDeDatos.modificarPuntuacion(stringCliente.substring(1,stringCliente.length()));
 						respuesta = "200";
 					} else {
 						respuesta = "404";
@@ -80,19 +74,17 @@ public class SocketServer {
 					} else {
 						// Si los tiene darles el código del juego en el que
 						// están jugando
-						respuesta = codigoAccesoAJuego.get(stringCliente
-								.substring(1, stringCliente.length()));
+						respuesta = codigoAccesoAJuego.get(stringCliente.substring(1, stringCliente.length()));
 						if (respuesta == null)
 							respuesta = "404";
 					}
-				} else if (stringCliente.substring(0, 4).equals("RANK")) {
-					respuesta=BaseDeDatos.enviarUsuario(stringCliente.substring(4,stringCliente.length()));
-					respuesta=respuesta.substring(2,respuesta.length());
 				} else if (stringCliente.substring(0, 2).equals("BD")) {
 					// Esta en la BD el usuario y sino introducir
-					System.out.println(stringCliente.substring(4, stringCliente.length()));
 					BaseDeDatos.crearUsuario(stringCliente.substring(2, stringCliente.length()));
 					respuesta="200";
+				} else if (stringCliente.substring(0, 4).equals("RANK")) {
+					respuesta=BaseDeDatos.enviarUsuario(stringCliente.substring(4,stringCliente.length()));
+					respuesta=respuesta.substring(2,respuesta.length());				
 				} else {
 					// Enviar mensaje a interpretar por el cliente
 					Juego juego;
@@ -101,18 +93,11 @@ public class SocketServer {
 						respuesta = juego.conexion(new String[] {
 								mensajeCliente[1], mensajeCliente[2] });
 					} else
-						respuesta = "404";
+						respuesta = "4004";
 				}
 				// Sending response back to the client.
-				
-				System.out.println("respies");
+
 				out.println(respuesta);
-//				OutputStream os = socket.getOutputStream();
-//				OutputStreamWriter osw = new OutputStreamWriter(os);
-//				BufferedWriter bw = new BufferedWriter(osw);
-//				System.out.println(respuesta);
-//				bw.write(respuesta);
-//				bw.flush();
 				if (cola.size() == numJugadoresPorPartida) {
 					String contrasenya = null;
 					do {
@@ -139,7 +124,7 @@ public class SocketServer {
 	}
 
 	private String randomNumber() {
-		return "9" + new BigInteger(130, random).toString(32);
+		return "9" + UUID.randomUUID().toString().substring(0,8);
 	}
 
 	public static void main(String[] args) {
@@ -174,16 +159,16 @@ public class SocketServer {
 			objects[0]=new Point();
 			objects[1]=new Point();
 			this.infoSalidaProcesado = new String[2];
+			this.entradaInfoUsuarioSinProcesar=new String[2];
 			infoSalidaProcesado[0] = "100,,,100";
 			infoSalidaProcesado[1] = "700,,,500";
 			entradaInfoUsuarioSinProcesar[0] = "100,,,100";
 			entradaInfoUsuarioSinProcesar[1] = "700,,,500";
-			this.entradaInfoUsuarioSinProcesar = new String[2];
 			try {
 				Thread.sleep(75);
 			} catch (InterruptedException e) {
 			}
-			new Thread(this).run();
+//			new Thread(this).run();
 		}
 
 		@Override
@@ -195,35 +180,38 @@ public class SocketServer {
 					e.printStackTrace();
 				}
 				for (int a = 0; a < 2; a++) {
-					
-					for(int b=0;b<2;b++){
-						String xy=entradaInfoUsuarioSinProcesar[b];
-						objects[b].setLocation(Integer.parseInt(xy.split(",,,")[0]),Integer.parseInt(xy.split(",,,")[1]));
-					}
-
-					if (objects[a] != null) {
-						if (objects[a].x < 0 || objects[a].x > 800
-								|| objects[a].y < 0 || objects[a].y > 600) {
-							objects[a] = null;
+//					try{
+						for(int b=0;b<2;b++){
+							String xy=entradaInfoUsuarioSinProcesar[b];
+							objects[b].setLocation(Integer.parseInt(xy.split(",,,")[0]),Integer.parseInt(xy.split(",,,")[1]));
 						}
 
-						if (objects[a].x > 0 && objects[a].y > 0
-								&& objects[a].x < 799 && objects[a].y < 599) {
-							if (color[objects[a].x][objects[a].y] != (a & 0)
-									|| color[objects[a].x + 1][objects[a].y] != (a & 0)
-									|| color[objects[a].x - 1][objects[a].y] != (a & 0)
-									|| color[objects[a].x][objects[a].y + 1] != (a & 0)
-									|| color[objects[a].x][objects[a].y - 1] != (a & 0)) {
+						if (objects[a] != null) {
+							if (objects[a].x < 0 || objects[a].x > 800
+									|| objects[a].y < 0 || objects[a].y > 600) {
 								objects[a] = null;
 							}
+
+							if (objects[a].x > 0 && objects[a].y > 0
+									&& objects[a].x < 799 && objects[a].y < 599) {
+								if (color[objects[a].x][objects[a].y] != (a & 0)
+										|| color[objects[a].x + 1][objects[a].y] != (a & 0)
+										|| color[objects[a].x - 1][objects[a].y] != (a & 0)
+										|| color[objects[a].x][objects[a].y + 1] != (a & 0)
+										|| color[objects[a].x][objects[a].y - 1] != (a & 0)) {
+									objects[a] = null;
+								}
+							}
+							if (objects[a].x > 0 && objects[a].y > 0
+									&& objects[a].x < 799 && objects[a].y < 599) {
+								color[Math
+								      .round((float) (objects[a].x + objects[a].x))][Math
+								                                                     .round((float) (objects[a].y + objects[a].y))] = a;
+							}
 						}
-						if (objects[a].x > 0 && objects[a].y > 0
-								&& objects[a].x < 799 && objects[a].y < 599) {
-							color[Math
-									.round((float) (objects[a].x + objects[a].x))][Math
-									.round((float) (objects[a].y + objects[a].y))] = a;
-						}
-					}
+//					}catch (Exception e) {
+//						// TODO: handle exception
+//					}
 				}
 				// TODO Comenzar Juego -> A poder ser dejarme una variable que
 				// poder coger y praparado para enviar con get
@@ -238,7 +226,7 @@ public class SocketServer {
 			enPartida.remove(contrasenya);
 			codigoAccesoAJuego.remove(usuarios[0]);
 			codigoAccesoAJuego.remove(usuarios[1]);
-			
+
 		}
 
 	}
@@ -339,15 +327,15 @@ public class SocketServer {
 				while (rs.next() && n == true) {
 					if (usuario == rs.getString(1)) {
 						statement
-								.executeUpdate("update puntuacion set puntuacion= puntuacion+1 where usuario='"
-										+ usuario + "'");
+						.executeUpdate("update puntuacion set puntuacion= puntuacion+1 where usuario='"
+								+ usuario + "'");
 						n = false;
 					}
 				}
 			} catch (SQLException e) {
 			}
 		}
-		
+
 		public static String enviarUsuario(String usuario) {
 			String mensaje="Error";
 			try {
@@ -355,86 +343,17 @@ public class SocketServer {
 				boolean n = true;
 				ResultSet rs = statement.executeQuery("select usuario, puntuacion from usuarios");
 				while (rs.next() && n == true) {
-					System.out.println(usuario);
 					if (usuario.equals(rs.getString("usuario"))) {
 						mensaje=(rs.getString("usuario") + ": "
 								+ rs.getInt("puntuacion"));
 						n=false;
-					}else{
-						System.out.println("PPPPPPP "+rs.getString("usuario")+" : "+rs.getInt("puntuacion"));
 					}
 				}
 			} catch (SQLException e) {
 				return "Error";
 			}
 			return mensaje;
-			
+
 		}
 	}
 }
-
-// public void initServer(){
-// try
-// {
-// int port = 5000;
-// ServerSocket serverSocket = new ServerSocket(port);
-// System.out.println("Server Started and listening to the port 5000");
-//
-// //Server is running always. This is done using this while(true) loop
-// while(true)
-// {
-// //Reading the message from the client
-// socket = serverSocket.accept();
-// InputStream is = socket.getInputStream();
-// InputStreamReader isr = new InputStreamReader(is);
-// BufferedReader br = new BufferedReader(isr);
-// String number = br.readLine();
-//
-// System.out.println("Message received from client is "+number);
-//
-// //Multiplying the number by 2 and forming the return message
-// String returnMessage;
-// try
-// {
-// int numberInIntFormat = Integer.parseInt(number);
-// int returnValue = numberInIntFormat*2;
-// returnMessage = String.valueOf(returnValue) + "\n";
-// }
-// catch(NumberFormatException e)
-// {
-// //Input was not a number. Sending proper message back to client.
-// returnMessage = "Please send a proper number\n";
-// }
-//
-// //Sending the response back to the client.
-// OutputStream os = socket.getOutputStream();
-// OutputStreamWriter osw = new OutputStreamWriter(os);
-// BufferedWriter bw = new BufferedWriter(osw);
-// bw.write(returnMessage);
-// System.out.println("Message sent to the client is "+returnMessage);
-// bw.flush();
-// }
-// }
-// catch (Exception e)
-// {
-// e.printStackTrace();
-// }
-// finally
-// {
-// try
-// {
-// socket.close();
-// }
-// catch(Exception e){}
-// }
-//
-// }
-
-// public static void main(String[] args) {
-// // TODO Auto-generated method stub
-// new SocketServer().initServer();
-// }
-//
-//
-//
-// }

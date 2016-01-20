@@ -37,20 +37,25 @@ public class OnlineMenu extends JPanel{
 				// TODO Auto-generated method stub
 				while(!sc.introducirEnCola()){
 					try {
-						Thread.sleep(50);
+						Thread.sleep(25);
 					} catch (InterruptedException e1) {
 					}
 				}
-				JOptionPane.showMessageDialog(new JFrame(), "El sever esta en busca de una partida");
+				int num=0;
+				
 				while(!sc.yaTieneContrincantes()){
+					if(num==0){
+						JOptionPane.showMessageDialog(new JFrame(), "El sever esta en busca de una partida");
+						num++;
+					}
 					try {
-						Thread.sleep(50);
+						Thread.sleep(5);
 					} catch (InterruptedException e1) {
 					}
 				}
 				ENDMenu();
-				
-				v.add(new OnlineJuego(v, 1,sc));		
+				if(num==0)v.add(new OnlineJuego(v, 1,sc,100,100));	
+				else v.add(new OnlineJuego(v, 1,sc,700,500));
 			}
 		});
 		Ranking = new JButton("RANKING");//TODO añadir icon y action listener

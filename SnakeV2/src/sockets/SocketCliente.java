@@ -61,7 +61,7 @@ public class SocketCliente {
 	public boolean yaTieneContrincantes(){
 		try {
 			this.contrasenyaJuego=envioInfo(2+usuario);
-			if(!(this.contrasenyaJuego).equals("300")&&!(this.contrasenyaJuego).equals("404"))return false;
+			if((this.contrasenyaJuego).equals("300")||(this.contrasenyaJuego).equals("404"))return false;
 			return true;
 		} catch (UnknownHostException e) {
 			return false;
@@ -72,23 +72,7 @@ public class SocketCliente {
 	}
 
 	public String movsJuego(String movPropio) throws UnknownHostException, IOException{
-		return envioInfo(this.contrasenyaJuego+",,,"+this.usuario+",,,"+movPropio);
-	
+		return envioInfo(this.contrasenyaJuego+",,,"+this.usuario+",,,"+movPropio);	
 	}
 
-	public static void main(String[] args) {
-		try {
-			SocketCliente b=new SocketCliente("gg");
-//			System.out.println(b.introducirEnCola());
-			System.out.println(b.envioInfo("fg"));
-			
-		} catch (UnknownHostException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-	}
 }

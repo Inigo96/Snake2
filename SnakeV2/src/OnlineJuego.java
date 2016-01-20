@@ -24,7 +24,7 @@ public class OnlineJuego extends JPanel{
 	Player yo;
 	SocketCliente sc;
 
-	public OnlineJuego(Ventana v, int players,SocketCliente sc){
+	public OnlineJuego(Ventana v, int players,SocketCliente sc,int posiX,int posiY){
 		
 		this.sc=sc;
 		
@@ -114,7 +114,6 @@ public class OnlineJuego extends JPanel{
     }
 
 	public void update() {
-		
 		objects[0].setLocation(yo.x,yo.y);
 		String xy=null;
 		try {
