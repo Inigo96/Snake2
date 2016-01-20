@@ -221,7 +221,7 @@ public class SocketServer {
 			if(objects[0]==null){
 				BaseDeDatos.modificarPuntuacion(usuarios[1]);
 			}else{
-				BaseDeDatos.modificarPuntuacion(usuarios[1]);
+				BaseDeDatos.modificarPuntuacion(usuarios[0]);
 			}
 			enPartida.remove(contrasenya);
 			codigoAccesoAJuego.remove(usuarios[0]);

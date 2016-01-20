@@ -34,7 +34,11 @@ public class OnlineJuego extends JPanel{
 			
 		objects= new Point[2];
 		
+		objects[0].setLocation(posiX,posiY);
+		
 		yo=new Player(true);
+		
+		yo.setLocation(posiX,posiY);
 		
 		pointList= new ArrayList<Ellipse2D>();
 		
@@ -60,7 +64,6 @@ public class OnlineJuego extends JPanel{
 
 			@Override
 			public void keyPressed(KeyEvent e) {
-				// TODO Auto-generated method stub
 				if(e.getKeyCode()==e.VK_RIGHT){
 					R=true;
 				}
@@ -114,17 +117,19 @@ public class OnlineJuego extends JPanel{
     }
 
 	public void update() {
-		objects[0].setLocation(yo.x,yo.y);
+	
 		String xy=null;
 		try {
 			xy=sc.movsJuego(objects[0].x+",,,"+objects[0].y);
 		} catch (UnknownHostException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
+		
+		if(!xy.equals("4004")){
 		
 		String[] xy1=xy.split(",,,");
 		
@@ -135,6 +140,14 @@ public class OnlineJuego extends JPanel{
 				objects[j].setLocation(objects[j].x, objects[j].y);
 				addPoint(objects[j]);
 			}
+		}
+		
+		try {
+			Thread.sleep(70);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		}
 		
 	}
