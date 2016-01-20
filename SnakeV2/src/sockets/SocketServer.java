@@ -5,6 +5,7 @@ import java.io.BufferedWriter;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.math.BigInteger;
 import java.net.*;
 import java.security.SecureRandom;
@@ -45,7 +46,7 @@ public class SocketServer {
 			random = new SecureRandom();
 			cola = new LinkedList<>();
 			enPartida = new HashMap<>();
-			final int port = 7007;
+			final int port = 1993;
 			ServerSocket serverSocket = new ServerSocket(port);
 			System.out.println("Server Started and listening to the port");
 
@@ -54,6 +55,7 @@ public class SocketServer {
 			while (true) {
 				// Reading the message from the client
 				socket = serverSocket.accept();
+				PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
 				BufferedReader br = new BufferedReader(new InputStreamReader(
 						socket.getInputStream()));
 				String stringCliente = br.readLine();
@@ -85,9 +87,10 @@ public class SocketServer {
 					}
 				} else if (stringCliente.substring(0, 4).equals("RANK")) {
 					respuesta=BaseDeDatos.enviarUsuario(stringCliente.substring(4,stringCliente.length()));
+					respuesta=respuesta.substring(2,respuesta.length());
 				} else if (stringCliente.substring(0, 2).equals("BD")) {
 					// Esta en la BD el usuario y sino introducir
-					System.out.println(stringCliente.substring(2, stringCliente.length()));
+					System.out.println(stringCliente.substring(4, stringCliente.length()));
 					BaseDeDatos.crearUsuario(stringCliente.substring(2, stringCliente.length()));
 					respuesta="200";
 				} else {
@@ -101,11 +104,15 @@ public class SocketServer {
 						respuesta = "404";
 				}
 				// Sending response back to the client.
-				OutputStream os = socket.getOutputStream();
-				OutputStreamWriter osw = new OutputStreamWriter(os);
-				BufferedWriter bw = new BufferedWriter(osw);
-				bw.write(respuesta);
-				bw.flush();
+				
+				System.out.println("respies");
+				out.println(respuesta);
+//				OutputStream os = socket.getOutputStream();
+//				OutputStreamWriter osw = new OutputStreamWriter(os);
+//				BufferedWriter bw = new BufferedWriter(osw);
+//				System.out.println(respuesta);
+//				bw.write(respuesta);
+//				bw.flush();
 				if (cola.size() == numJugadoresPorPartida) {
 					String contrasenya = null;
 					do {
@@ -344,14 +351,17 @@ public class SocketServer {
 		public static String enviarUsuario(String usuario) {
 			String mensaje="Error";
 			try {
+				mensaje= "El usuario requerido no existe";
 				boolean n = true;
 				ResultSet rs = statement.executeQuery("select usuario, puntuacion from usuarios");
 				while (rs.next() && n == true) {
-					if (usuario == rs.getString(1)) {
-						mensaje=(rs.getString(1) + ": "
+					System.out.println(usuario);
+					if (usuario.equals(rs.getString("usuario"))) {
+						mensaje=(rs.getString("usuario") + ": "
 								+ rs.getInt("puntuacion"));
+						n=false;
 					}else{
-						mensaje= "El usuario requerido no existe";
+						System.out.println("PPPPPPP "+rs.getString("usuario")+" : "+rs.getInt("puntuacion"));
 					}
 				}
 			} catch (SQLException e) {

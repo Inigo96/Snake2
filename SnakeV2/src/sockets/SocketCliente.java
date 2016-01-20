@@ -25,7 +25,7 @@ public class SocketCliente {
 		OutputStream os = socket.getOutputStream();
 		OutputStreamWriter osw = new OutputStreamWriter(os);
 		BufferedWriter bw = new BufferedWriter(osw);
-		bw.write(datoEnvio+"\n ");
+		bw.write(datoEnvio+"\n");
 		bw.flush();
 		//Get the return message from the server
 		InputStream is = socket.getInputStream();
@@ -61,12 +61,14 @@ public class SocketCliente {
 	public boolean yaTieneContrincantes(){
 		try {
 			this.contrasenyaJuego=envioInfo(2+usuario);
-			if(!(this.contrasenyaJuego).equals("300")&&!(this.contrasenyaJuego).equals("404"));
+			if(!(this.contrasenyaJuego).equals("300")&&!(this.contrasenyaJuego).equals("404"))return false;
 			return true;
 		} catch (UnknownHostException e) {
+			return false;
 		} catch (IOException e) {
+			return false;
 		}	
-		return false;
+		
 	}
 
 	public String movsJuego(String movPropio) throws UnknownHostException, IOException{
